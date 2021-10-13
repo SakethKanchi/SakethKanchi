@@ -3,7 +3,6 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=saketh&label=Profile%20views&color=0e75b6&style=flat" alt="saketh" /> </p>
 
-<p align="left"> <a href="https://twitter.com/sakethkanchi3" target="blank"><img src="https://img.shields.io/twitter/follow/sakethkanchi3?logo=twitter&style=for-the-badge" alt="sakethkanchi3" /></a> </p>
 
 - 🔭 I’ve worked on JavaScript [Vanilla Weather App](https://saketh-0.github.io/Weather_VanillaJS/)
 
