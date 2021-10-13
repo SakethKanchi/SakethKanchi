@@ -4,7 +4,7 @@
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=saketh&label=Profile%20views&color=0e75b6&style=flat" alt="saketh" /> </p>
 
 
-- 🔭 I’ve worked on JavaScript [Vanilla Weather App](https://saketh-0.github.io/Weather_VanillaJS/)
+- 🔭 I’ve worked on JavaScript [Vanilla Weather App](https://sakethkanchi.github.io/Weather_VanillaJS/)
 
 - 🌱 I’m currently learning **React, Cloud, CSS, Node.js**
 
