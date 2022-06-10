@@ -12,8 +12,6 @@
 
 - 🤝 I’m looking for help with [React Todo](https://todoreact-app1.herokuapp.com/)
 
-- 📫 How to reach me **tempmails1121@gmail.com**
-
 - ⚡ I'm interested in learning **Flutter, Docker, Django, R-Programming**
 
 <p align="left">
