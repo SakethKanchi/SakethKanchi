@@ -4,13 +4,7 @@
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=saketh&label=Profile%20views&color=0e75b6&style=flat" alt="saketh" /> </p>
 
 
-- 🔭 I’ve worked on JavaScript [Vanilla Weather App](https://sakethkanchi.github.io/Weather_VanillaJS/)
-
 - 🌱 I’m currently learning **React, Cloud, CSS, Node.js**
-
-- 👯 I’ve worked on [Vue Weather App](https://github.com/Saketh-0/Vue_WeatherApp)
-
-- 🤝 I’m looking for help with [React Todo](https://todoreact-app1.herokuapp.com/)
 
 - ⚡ I'm interested in learning **Flutter, Docker, Django, R-Programming**
 
