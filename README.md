@@ -1,12 +1,13 @@
 <h1 align="center">Hi 👋, I'm Saketh</h1>
 <h3 align="center">A backend developer with a bit of experience on the frontend too</h3>
+<h4 align="center">Currently a Masters Student</h4>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=saketh&label=Profile%20views&color=0e75b6&style=flat" alt="saketh" /> </p>
 
 
 - 🌱 I’m currently learning **React, Cloud, CSS, Node.js**
 
-- ⚡ I'm interested in learning **Flutter, Docker, Django, R-Programming**
+- ⚡ I'm interested in learning **FNext.js, Docker, Django, Redis**
 
 
 <h3 align="left">Languages and Tools:</h3>
