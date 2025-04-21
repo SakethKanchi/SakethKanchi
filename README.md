@@ -7,7 +7,7 @@
 
 - 🌱 I’m currently learning **React, Cloud, CSS, Node.js**
 
-- ⚡ I'm interested in learning **FNext.js, Docker, Django, Redis**
+- ⚡ I'm interested in learning **Next.js, Docker, Django, Redis**
 
 
 <h3 align="left">Languages and Tools:</h3>
