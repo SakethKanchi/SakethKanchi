@@ -56,6 +56,7 @@ export default function RootLayout({
         <ThemeProvider>
           <SmoothScroll>
             <SiteBackdrop />
+            <div aria-hidden="true" className="grain" />
             <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
               <div className="lg:grid lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.1fr)] lg:gap-12 xl:gap-16">
                 <Sidebar />

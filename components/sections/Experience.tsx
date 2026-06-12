@@ -1,5 +1,6 @@
 import { experience } from "@/content/experience";
 import { Reveal } from "@/components/motion/Reveal";
+import { SectionHeading } from "./SectionHeading";
 
 // Tech inferred per role (not in the content type; presentational only).
 const ROLE_TAGS: Record<string, string[]> = {
@@ -24,22 +25,16 @@ const ROLE_TAGS: Record<string, string[]> = {
 
 export function Experience() {
   return (
-    <section
-      id="experience"
-      className="scroll-mt-24 border-t border-line py-14 lg:py-16"
-    >
-      <Reveal>
-        <h2 className="mb-8 text-xs font-semibold uppercase tracking-[0.18em] text-fg">
-          Experience
-        </h2>
-      </Reveal>
+    <section id="experience" className="scroll-mt-24 py-14 lg:py-16">
+      <span aria-hidden="true" className="hairline mb-14 block" />
+      <SectionHeading index="02">Experience</SectionHeading>
 
       <ol className="flex flex-col gap-3">
         {experience.map((item, i) => {
           const tags = ROLE_TAGS[item.company] ?? [];
           return (
             <Reveal as="li" key={item.company + item.period} delay={i * 0.06}>
-              <div className="group rounded-xl border border-transparent p-5 transition-colors hover:border-line hover:bg-surface/60 -mx-5">
+              <div className="group -mx-5 rounded-2xl border border-transparent p-5 transition-all duration-400 hover:border-line hover:bg-surface/60 hover:shadow-[0_12px_36px_-20px_color-mix(in_oklch,var(--accent)_45%,transparent)]">
                 <div className="grid grid-cols-1 gap-1 sm:grid-cols-[8rem_1fr] sm:gap-x-6">
                   <span className="pt-0.5 font-mono text-xs uppercase tracking-wide text-muted">
                     {item.period}
@@ -73,7 +68,7 @@ export function Experience() {
                         {tags.map((tag) => (
                           <li
                             key={tag}
-                            className="rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent"
+                            className="rounded-md border border-accent/15 bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent transition-colors group-hover:border-accent/30"
                           >
                             {tag}
                           </li>

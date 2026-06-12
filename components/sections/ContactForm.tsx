@@ -44,11 +44,8 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="contact-name"
-          className="font-mono text-xs tracking-tight text-muted"
-        >
-          name
+        <label htmlFor="contact-name" className="eyebrow">
+          Name
         </label>
         <Input
           id="contact-name"
@@ -63,11 +60,8 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="contact-email"
-          className="font-mono text-xs tracking-tight text-muted"
-        >
-          email
+        <label htmlFor="contact-email" className="eyebrow">
+          Email
         </label>
         <Input
           id="contact-email"
@@ -81,11 +75,8 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="contact-message"
-          className="font-mono text-xs tracking-tight text-muted"
-        >
-          message
+        <label htmlFor="contact-message" className="eyebrow">
+          Message
         </label>
         <Textarea
           id="contact-message"
@@ -114,7 +105,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex h-11 items-center justify-center rounded-xl bg-accent px-6 text-sm font-semibold text-accent-fg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:cursor-not-allowed disabled:opacity-60"
+        className="cta-glow inline-flex h-11 items-center justify-center rounded-xl bg-accent px-6 text-sm font-semibold text-accent-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending ? "Sending…" : "Send message"}
       </button>
