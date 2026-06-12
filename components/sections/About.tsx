@@ -21,14 +21,14 @@ export function About() {
       id="about"
       className="scroll-mt-24 pt-16 pb-14 lg:pt-24 lg:pb-16"
     >
-      <Reveal>
-        <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.18em] text-fg lg:hidden">
-          About
-        </h2>
-        <p className="max-w-prose text-[17px] leading-relaxed text-muted">
-          {profile.bio}
-        </p>
-      </Reveal>
+      {/* Not wrapped in Reveal: this bio is the above-the-fold LCP element —
+          it must paint at full opacity on first frame. */}
+      <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.18em] text-fg lg:hidden">
+        About
+      </h2>
+      <p className="max-w-prose text-[17px] leading-relaxed text-muted">
+        {profile.bio}
+      </p>
 
       <Reveal delay={0.06}>
         <ul className="mt-6 flex flex-wrap gap-2.5">

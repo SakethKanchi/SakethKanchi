@@ -166,7 +166,10 @@ export function GenerativeBg() {
         p.setup = () => {
           const c = p.createCanvas(host.offsetWidth, host.offsetHeight);
           c.parent(host);
-          p.pixelDensity(Math.min(window.devicePixelRatio || 1, 2)); // cap DPR
+          // Full-viewport backdrop: density 1 + 30fps keeps main-thread cost
+          // low (it's a faint decorative layer, not a focal animation).
+          p.pixelDensity(1);
+          p.frameRate(30);
           applyTheme();
           spawn();
           if (reduceMotion) {
