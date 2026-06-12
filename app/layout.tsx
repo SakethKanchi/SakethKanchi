@@ -11,8 +11,33 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swa
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sakethkanchi.com"),
   title: "Saketh Kanchi — Full-Stack Engineer",
-  description: "Full-Stack Engineer specializing in AI-powered applications and intelligent automation.",
+  description:
+    "Full-Stack Engineer building AI-powered products: RAG systems, LLM agents, and developer tools. Shipped a dev tool with 10,000+ users.",
+  keywords: [
+    "Saketh Kanchi",
+    "Full-Stack Engineer",
+    "React",
+    "Node.js",
+    "Python",
+    "RAG",
+    "LLM",
+    "AI Engineer",
+  ],
+  authors: [{ name: "Saketh Kanchi" }],
+  openGraph: {
+    title: "Saketh Kanchi — Full-Stack Engineer",
+    description:
+      "AI-powered products that ship — RAG systems, LLM agents, developer tools.",
+    type: "website",
+    url: "https://sakethkanchi.com",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Saketh Kanchi — Full-Stack Engineer",
+    description: "AI-powered products that ship.",
+  },
 };
 
 export default function RootLayout({
