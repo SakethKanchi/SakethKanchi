@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Nav } from "@/components/ui/Nav";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
@@ -31,6 +32,7 @@ export default function RootLayout({
             <main className="mx-auto max-w-6xl px-6">{children}</main>
             {/* Footer added in Task 15 */}
           </SmoothScroll>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
