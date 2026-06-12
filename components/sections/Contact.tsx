@@ -16,19 +16,21 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="py-20 md:py-28">
+    <section
+      id="contact"
+      className="scroll-mt-24 border-t border-line py-14 lg:py-16"
+    >
       <Reveal>
-        <div className="mb-10 flex flex-col gap-3 md:mb-14">
-          <span className="font-mono text-xs tracking-tight text-accent">
-            // contact
-          </span>
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-fg md:text-5xl">
-            Get in touch
-          </h2>
-        </div>
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-fg">
+          Contact
+        </h2>
+        <p className="mb-8 max-w-prose text-[17px] leading-relaxed text-muted">
+          Got a role or a project in mind? The form lands in my inbox. Prefer
+          email or socials? Reach me directly.
+        </p>
       </Reveal>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-12">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-10">
         {/* Form */}
         <Reveal delay={0.06} className="lg:col-span-3">
           <ContactForm />
@@ -36,12 +38,7 @@ export function Contact() {
 
         {/* Always-visible fallback: copy email + socials */}
         <Reveal delay={0.12} className="lg:col-span-2">
-          <div className="flex h-full flex-col gap-6">
-            <p className="max-w-prose text-base leading-relaxed text-muted">
-              Prefer email or socials? Reach me directly — the form sends to the
-              same inbox.
-            </p>
-
+          <div className="flex h-full flex-col gap-5">
             <button
               type="button"
               onClick={copyEmail}

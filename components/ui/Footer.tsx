@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { profile } from "@/content/profile";
 
 export function Footer() {
   return (
-    <footer className="border-t border-line mt-20">
-      <div className="max-w-6xl mx-auto px-6 py-12">
+    <footer className="border-t border-line">
+      <div className="py-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           {/* Left: name + tagline */}
           <div className="flex flex-col gap-1">

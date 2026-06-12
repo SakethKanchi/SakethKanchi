@@ -21,11 +21,21 @@ for (const theme of THEMES) {
     await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
 
-    // Settle all reveals.
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(1200);
+    // Settle all reveals. Scroll the whole page in steps so every
+    // IntersectionObserver-driven Reveal fires, then wait out the 600ms CSS
+    // transition (+ stagger) before axe samples colors — mid-transition
+    // opacity blends would otherwise trip the contrast rule on settled tokens.
+    await page.evaluate(async () => {
+      const step = window.innerHeight * 0.8;
+      for (let y = 0; y <= document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 120));
+      }
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    await page.waitForTimeout(1400);
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(900);
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa"])

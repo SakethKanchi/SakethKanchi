@@ -1,71 +1,73 @@
 import { projects } from "@/content/projects";
-import { BentoCard } from "@/components/ui/BentoCard";
 import { Reveal } from "@/components/motion/Reveal";
+import { PROJECT_THUMBS } from "./ProjectThumbnails";
 
 export function Projects() {
   return (
-    <section id="projects" className="py-20 md:py-28">
+    <section
+      id="projects"
+      className="scroll-mt-24 border-t border-line py-14 lg:py-16"
+    >
       <Reveal>
-        <div className="mb-10 flex flex-col gap-3 md:mb-14">
-          <span className="font-mono text-xs tracking-tight text-accent">
-            // work
-          </span>
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-fg md:text-5xl">
-            Projects
-          </h2>
-        </div>
+        <h2 className="mb-8 text-xs font-semibold uppercase tracking-[0.18em] text-fg">
+          Projects
+        </h2>
       </Reveal>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:auto-rows-[minmax(0,1fr)]">
-        {projects.map((project, i) => (
-          <Reveal key={project.name} delay={i * 0.06}>
-            <BentoCard className="flex h-full flex-col gap-5 p-7 md:p-8">
-              <div className="flex flex-col gap-3">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <h3 className="text-xl font-bold tracking-tight text-fg md:text-2xl">
-                    {project.name}
-                  </h3>
-                  {project.highlight && (
-                    <span className="shrink-0 rounded-full bg-accent-soft px-3 py-1 font-mono text-xs font-medium text-accent">
-                      {project.highlight}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm leading-relaxed text-muted md:text-base">
-                  {project.blurb}
-                </p>
-              </div>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        {projects.map((project, i) => {
+          const Thumb = PROJECT_THUMBS[project.name];
+          return (
+            <Reveal key={project.name} delay={i * 0.06}>
+              <article className="group flex h-full flex-col gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-accent/50">
+                {Thumb && <Thumb />}
 
-              <div className="mt-auto flex flex-col gap-5">
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-accent-soft px-3 py-1 font-mono text-xs text-accent"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                <div className="flex flex-col gap-3 px-1">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                    <h3 className="text-lg font-bold tracking-tight text-fg">
+                      {project.name}
+                    </h3>
+                    {project.highlight && (
+                      <span className="rounded-full bg-accent-soft px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">
+                        {project.highlight}
+                      </span>
+                    )}
+                  </div>
 
-                <div className="flex flex-wrap gap-2 border-t border-line pt-5">
-                  {project.links.map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-bg px-4 py-2 text-sm font-semibold text-fg transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-                    >
-                      {link.label}
-                      <span aria-hidden="true">{"↗"}</span>
-                    </a>
-                  ))}
+                  <p className="text-sm leading-relaxed text-muted">
+                    {project.blurb}
+                  </p>
+
+                  <ul className="flex flex-wrap gap-1.5">
+                    {project.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto flex flex-wrap gap-2 pt-2">
+                    {project.links.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-bg px-3.5 py-1.5 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                      >
+                        {link.label}
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </BentoCard>
-          </Reveal>
-        ))}
+              </article>
+            </Reveal>
+          );
+        })}
       </div>
     </section>
   );

@@ -1,90 +1,89 @@
 import { profile } from "@/content/profile";
 import { education, certifications } from "@/content/education";
-import { BentoCard } from "@/components/ui/BentoCard";
 import { Reveal } from "@/components/motion/Reveal";
+import { MapPin, Briefcase, GraduationCap, Rocket } from "lucide-react";
+
+const facts = [
+  { icon: Rocket, label: `${profile.stat.value} ${profile.stat.label}` },
+  ...(profile.openToWork
+    ? [{ icon: Briefcase, label: "Open to work" }]
+    : []),
+  { icon: MapPin, label: profile.location },
+  {
+    icon: GraduationCap,
+    label: `${education[0].degree.replace("M.S. ", "M.S. ")} @ Stevens`,
+  },
+];
 
 export function About() {
   return (
-    <section id="about" className="py-20 md:py-28">
+    <section
+      id="about"
+      className="scroll-mt-24 pt-16 pb-14 lg:pt-24 lg:pb-16"
+    >
       <Reveal>
-        <div className="mb-10 flex flex-col gap-3 md:mb-14">
-          <span className="font-mono text-xs tracking-tight text-accent">
-            // about
-          </span>
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-fg md:text-5xl">
-            About
-          </h2>
-        </div>
+        <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.18em] text-fg lg:hidden">
+          About
+        </h2>
+        <p className="max-w-prose text-[17px] leading-relaxed text-muted">
+          {profile.bio}
+        </p>
       </Reveal>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8">
-        {/* Left / main: bio + resume download */}
-        <Reveal delay={0.06} className="lg:col-span-3">
-          <div className="flex h-full flex-col gap-8">
-            <p className="max-w-prose text-base leading-relaxed text-muted md:text-lg md:leading-loose">
-              {profile.bio}
-            </p>
+      <Reveal delay={0.06}>
+        <ul className="mt-6 flex flex-wrap gap-2.5">
+          {facts.map((f) => (
+            <li
+              key={f.label}
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-medium text-fg"
+            >
+              <f.icon className="h-4 w-4 text-accent" aria-hidden="true" />
+              {f.label}
+            </li>
+          ))}
+        </ul>
+      </Reveal>
 
-            <div>
-              <a
-                href={profile.resumePath}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-fg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-              >
-                Download résumé
-                <span aria-hidden="true" className="font-mono">↓</span>
-              </a>
-            </div>
+      <Reveal delay={0.1}>
+        <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 border-t border-line pt-7 sm:grid-cols-2">
+          <div>
+            <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-muted">
+              Education
+            </h3>
+            <ul className="flex flex-col gap-3.5">
+              {education.map((item) => (
+                <li key={item.school} className="flex flex-col gap-0.5">
+                  <span className="text-sm font-semibold text-fg">
+                    {item.degree}
+                  </span>
+                  <span className="text-sm text-fg">{item.school}</span>
+                  <span className="font-mono text-xs text-muted">
+                    {item.detail} · {item.period}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </Reveal>
 
-        {/* Right / side: education + certifications */}
-        <div className="flex flex-col gap-4 lg:col-span-2">
-          {/* Education card */}
-          <Reveal delay={0.12}>
-            <BentoCard className="flex flex-col gap-5 p-7">
-              <span className="font-mono text-xs tracking-tight text-muted">
-                01 · education
-              </span>
-              <ul className="flex flex-col gap-5">
-                {education.map((item) => (
-                  <li key={item.school} className="flex flex-col gap-1">
-                    <span className="text-sm font-bold text-fg">
-                      {item.school}
-                    </span>
-                    <span className="text-sm text-fg/90">{item.degree}</span>
-                    <span className="font-mono text-xs text-muted">
-                      {item.detail} · {item.period}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </BentoCard>
-          </Reveal>
-
-          {/* Certifications card */}
-          <Reveal delay={0.18}>
-            <BentoCard className="flex flex-col gap-5 p-7">
-              <span className="font-mono text-xs tracking-tight text-muted">
-                02 · certifications
-              </span>
-              <ul className="flex flex-col gap-4">
-                {certifications.map((cert) => (
-                  <li key={cert.name} className="flex flex-col gap-1">
-                    <span className="text-sm font-semibold text-fg">
-                      {cert.name}
-                    </span>
-                    <span className="font-mono text-xs text-muted">
-                      {cert.issuer} · {cert.year}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </BentoCard>
-          </Reveal>
+          <div>
+            <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-muted">
+              Certifications
+            </h3>
+            <ul className="flex flex-col gap-3.5">
+              {certifications.map((cert) => (
+                <li key={cert.name} className="flex flex-col gap-0.5">
+                  <span className="text-sm font-semibold text-fg">
+                    {cert.name}
+                  </span>
+                  <span className="font-mono text-xs text-muted">
+                    {cert.issuer} · {cert.year}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -3,9 +3,10 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
-import { Nav } from "@/components/ui/Nav";
+import { Sidebar } from "@/components/shell/Sidebar";
 import { Footer } from "@/components/ui/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SiteBackdrop } from "@/components/shell/SiteBackdrop";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
@@ -54,9 +55,16 @@ export default function RootLayout({
       <body className="bg-bg text-fg font-sans antialiased min-h-screen">
         <ThemeProvider>
           <SmoothScroll>
-            <Nav />
-            <main className="mx-auto max-w-6xl px-6">{children}</main>
-            <Footer />
+            <SiteBackdrop />
+            <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+              <div className="lg:grid lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.1fr)] lg:gap-12 xl:gap-16">
+                <Sidebar />
+                <div className="min-w-0">
+                  <main>{children}</main>
+                  <Footer />
+                </div>
+              </div>
+            </div>
           </SmoothScroll>
           <Toaster />
         </ThemeProvider>

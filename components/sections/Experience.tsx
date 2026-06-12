@@ -1,80 +1,92 @@
 import { experience } from "@/content/experience";
 import { Reveal } from "@/components/motion/Reveal";
 
+// Tech inferred per role (not in the content type; presentational only).
+const ROLE_TAGS: Record<string, string[]> = {
+  "Fund Flow OS": [
+    "React",
+    "Node.js",
+    "Cloudflare Workers",
+    "RAG",
+    "Python",
+    "Playwright",
+    "Fly.io",
+  ],
+  "Fund Flow OS (SideQuest)": [
+    "Python",
+    "Google Gemini",
+    "Foursquare API",
+    "Mapbox",
+    "PostgreSQL",
+    "GeoJSON",
+  ],
+};
+
 export function Experience() {
   return (
-    <section id="experience" className="py-20 md:py-28">
+    <section
+      id="experience"
+      className="scroll-mt-24 border-t border-line py-14 lg:py-16"
+    >
       <Reveal>
-        <div className="mb-10 flex flex-col gap-3 md:mb-14">
-          <span className="font-mono text-xs tracking-tight text-accent">
-            // experience
-          </span>
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-fg md:text-5xl">
-            Experience
-          </h2>
-        </div>
+        <h2 className="mb-8 text-xs font-semibold uppercase tracking-[0.18em] text-fg">
+          Experience
+        </h2>
       </Reveal>
 
-      <div className="relative">
-        {/* vertical rail */}
-        <div
-          aria-hidden="true"
-          className="absolute left-[7px] top-2 bottom-2 w-px bg-line md:left-[9px]"
-        />
-
-        <ol className="flex flex-col gap-12 md:gap-16">
-          {experience.map((item, i) => (
-            <li key={item.company + item.period} className="relative pl-8 md:pl-10">
-              {/* node — kept outside Reveal so its absolute positioning
-                  resolves against the <li>, not GSAP's transformed wrapper */}
-              <span
-                aria-hidden="true"
-                className="absolute left-0 top-1.5 flex h-3.5 w-3.5 items-center justify-center md:h-[19px] md:w-[19px]"
-              >
-                <span className="h-3.5 w-3.5 rounded-full border-2 border-bg bg-accent md:h-[18px] md:w-[18px]" />
-              </span>
-
-              <Reveal delay={i * 0.06}>
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                      <h3 className="text-lg font-bold tracking-tight text-fg md:text-xl">
-                        {item.company}
+      <ol className="flex flex-col gap-3">
+        {experience.map((item, i) => {
+          const tags = ROLE_TAGS[item.company] ?? [];
+          return (
+            <Reveal as="li" key={item.company + item.period} delay={i * 0.06}>
+              <div className="group rounded-xl border border-transparent p-5 transition-colors hover:border-line hover:bg-surface/60 -mx-5">
+                <div className="grid grid-cols-1 gap-1 sm:grid-cols-[8rem_1fr] sm:gap-x-6">
+                  <span className="pt-0.5 font-mono text-xs uppercase tracking-wide text-muted">
+                    {item.period}
+                  </span>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-0.5">
+                      <h3 className="text-base font-semibold leading-snug text-fg transition-colors group-hover:text-accent">
+                        {item.title}{" "}
+                        <span className="text-muted">· {item.company}</span>
                       </h3>
-                      <span className="font-mono text-xs text-muted md:text-sm">
-                        {item.period}
-                      </span>
+                      <span className="text-xs text-muted">{item.location}</span>
                     </div>
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-                      <span className="text-base font-medium text-fg/90">
-                        {item.title}
-                      </span>
-                      <span className="text-sm text-muted">
-                        {item.location}
-                      </span>
-                    </div>
-                  </div>
 
-                  <ul className="flex flex-col gap-2">
-                    {item.bullets.map((bullet, b) => (
-                      <li
-                        key={b}
-                        className="relative pl-5 text-sm leading-relaxed text-muted"
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="absolute left-0 top-[0.55em] h-1.5 w-1.5 rounded-full bg-accent"
-                        />
-                        {bullet}
-                      </li>
-                    ))}
-                  </ul>
+                    <ul className="flex flex-col gap-1.5">
+                      {item.bullets.map((bullet, b) => (
+                        <li
+                          key={b}
+                          className="relative pl-4 text-[13.5px] leading-relaxed text-muted"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="absolute left-0 top-[0.6em] h-1 w-1 rounded-full bg-accent"
+                          />
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {tags.length > 0 && (
+                      <ul className="flex flex-wrap gap-1.5">
+                        {tags.map((tag) => (
+                          <li
+                            key={tag}
+                            className="rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent"
+                          >
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
-      </div>
+              </div>
+            </Reveal>
+          );
+        })}
+      </ol>
     </section>
   );
 }
