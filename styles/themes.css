@@ -1,0 +1,134 @@
+/* ─── Base token defaults (indigo-night — matches default theme) ─── */
+:root {
+  --bg: #0e1016;
+  --surface: #171a22;
+  --line: #262b36;
+  --fg: #e7e9ee;
+  --muted: #7a8294;
+  --accent: #9b8cff;
+  --accent-fg: #0e1016;
+  --accent-soft: #1f2430;
+}
+
+/* ─── Per-theme token overrides ─── */
+[data-theme="indigo-night"] {
+  --bg: #0e1016;
+  --surface: #171a22;
+  --line: #262b36;
+  --fg: #e7e9ee;
+  --muted: #7a8294;
+  --accent: #9b8cff;
+  --accent-fg: #0e1016;
+  --accent-soft: #1f2430;
+}
+[data-theme="tokyo-night"] {
+  --bg: #1a1b26;
+  --surface: #24283b;
+  --line: #2f3549;
+  --fg: #c0caf5;
+  --muted: #565f89;
+  --accent: #7aa2f7;
+  --accent-fg: #1a1b26;
+  --accent-soft: #222a45;
+}
+[data-theme="catppuccin-mocha"] {
+  --bg: #1e1e2e;
+  --surface: #28283d;
+  --line: #393955;
+  --fg: #cdd6f4;
+  --muted: #7f849c;
+  --accent: #cba6f7;
+  --accent-fg: #1e1e2e;
+  --accent-soft: #302a45;
+}
+[data-theme="catppuccin-latte"] {
+  --bg: #eff1f5;
+  --surface: #ffffff;
+  --line: #ccd0da;
+  --fg: #4c4f69;
+  --muted: #6c6f85;
+  --accent: #8839ef;
+  --accent-fg: #ffffff;
+  --accent-soft: #e6e0f2;
+}
+[data-theme="rose-pine"] {
+  --bg: #191724;
+  --surface: #1f1d2e;
+  --line: #2a273f;
+  --fg: #e0def4;
+  --muted: #6e6a86;
+  --accent: #ebbcba;
+  --accent-fg: #191724;
+  --accent-soft: #2a2435;
+}
+[data-theme="rose-pine-dawn"] {
+  --bg: #faf4ed;
+  --surface: #fffaf3;
+  --line: #f2e9e1;
+  --fg: #575279;
+  --muted: #797593;
+  --accent: #d7827e;
+  --accent-fg: #fffaf3;
+  --accent-soft: #f4ede8;
+}
+[data-theme="gruvbox"] {
+  --bg: #282828;
+  --surface: #32302f;
+  --line: #3c3836;
+  --fg: #ebdbb2;
+  --muted: #a89984;
+  --accent: #fabd2f;
+  --accent-fg: #282828;
+  --accent-soft: #3c3836;
+}
+[data-theme="nord"] {
+  --bg: #2e3440;
+  --surface: #3b4252;
+  --line: #434c5e;
+  --fg: #eceff4;
+  --muted: #8893a8;
+  --accent: #88c0d0;
+  --accent-fg: #2e3440;
+  --accent-soft: #3b4252;
+}
+
+/* ─── Remap shadcn semantic vars to our tokens ─────────────────────
+   Our 8 base tokens (--bg, --surface, --line, --fg, --muted, --accent,
+   --accent-fg, --accent-soft) are defined per [data-theme] above AND in
+   the :root default block above. Shadcn components read these semantic
+   vars (--primary, --background, etc.) so they inherit the active theme.
+
+   NAME CLASH: shadcn --muted = muted BG; shadcn --accent = hover BG.
+   Our --muted = de-emphasized text; our --accent = brand color.
+   In this `:root` remap block we DO override --muted and --accent to
+   shadcn semantics, BUT the [data-theme] selector has higher specificity
+   and restores --muted / --accent to our base token values on <html>.
+   So var(--muted) and var(--accent) used elsewhere still resolve to our
+   base tokens when a data-theme is active (which is always the case via
+   next-themes defaultTheme). Our Tailwind utilities use --color-accent /
+   --color-muted (registered in @theme inline) which also read our base
+   tokens via the cascade. No circular resolution.
+─────────────────────────────────────────────────────────────────── */
+:root {
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--surface);
+  --card-foreground: var(--fg);
+  --popover: var(--surface);
+  --popover-foreground: var(--fg);
+  --primary: var(--accent);
+  --primary-foreground: var(--accent-fg);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--fg);
+  /* shadcn --muted = muted bg → our accent-soft (overridden back by [data-theme]) */
+  --muted: var(--accent-soft);
+  /* shadcn --muted-foreground = de-emphasized text → our muted text token */
+  --muted-foreground: var(--muted);
+  /* shadcn --accent = subtle hover bg → our accent-soft */
+  --accent: var(--accent-soft);
+  --accent-foreground: var(--fg);
+  --border: var(--line);
+  --input: var(--line);
+  /* shadcn --ring = focus ring → our brand accent */
+  --ring: var(--accent);
+}
