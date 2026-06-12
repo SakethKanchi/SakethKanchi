@@ -83,11 +83,15 @@ export function GenerativeBg() {
     let instance: p5Type | null = null;
     let observer: MutationObserver | null = null;
     let cancelled = false;
+    let idleHandle: number | null = null;
 
     // mutable color state, recolored on theme change without restarting p5
     const colors = { accent: { r: 155, g: 140, b: 255 }, muted: { r: 122, g: 130, b: 148 } };
 
-    import("p5").then(({ default: P5 }) => {
+    // Defer the ~350 KiB p5 import to browser idle so it never competes with
+    // the hero's first paint / LCP. The backdrop is decorative, not critical.
+    const startP5 = () =>
+      import("p5").then(({ default: P5 }) => {
       if (cancelled || !host) return;
 
       const sketch = (p: p5Type) => {
@@ -202,8 +206,26 @@ export function GenerativeBg() {
       });
     });
 
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (h: number) => void;
+    };
+    if (typeof w.requestIdleCallback === "function") {
+      idleHandle = w.requestIdleCallback(() => {
+        if (!cancelled) startP5();
+      });
+    } else {
+      idleHandle = window.setTimeout(() => {
+        if (!cancelled) startP5();
+      }, 200) as unknown as number;
+    }
+
     return () => {
       cancelled = true;
+      if (idleHandle != null) {
+        if (typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(idleHandle);
+        else window.clearTimeout(idleHandle);
+      }
       observer?.disconnect();
       instance?.remove();
     };
