@@ -46,7 +46,7 @@ export function Contact() {
               type="button"
               onClick={copyEmail}
               aria-label={`Copy email ${profile.email}`}
-              className="inline-flex w-fit items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-fg transition-colors hover:bg-accent-soft"
+              className="inline-flex w-fit items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               <span className="font-mono text-xs text-accent">@</span>
               {profile.email}
@@ -59,7 +59,7 @@ export function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-accent"
+                    className="inline-flex items-center gap-2 rounded-sm font-mono text-sm text-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
                     <span aria-hidden="true">↗</span>
                     {social.label}

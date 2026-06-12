@@ -23,7 +23,7 @@ export function ThemeSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Choose theme"
-        className="flex h-9 items-center gap-2 rounded-full border border-line px-3 text-sm text-fg"
+        className="flex h-9 items-center gap-2 rounded-full border border-line px-3 text-sm text-fg transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
       >
         <span
           className="h-3 w-3 rounded-full"

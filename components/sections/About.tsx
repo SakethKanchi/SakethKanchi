@@ -30,7 +30,7 @@ export function About() {
                 href={profile.resumePath}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-fg transition-opacity hover:opacity-90"
+                className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-fg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
               >
                 Download résumé
                 <span aria-hidden="true" className="font-mono">↓</span>
@@ -53,7 +53,7 @@ export function About() {
                     <span className="text-sm font-bold text-fg">
                       {item.school}
                     </span>
-                    <span className="text-sm text-fg/80">{item.degree}</span>
+                    <span className="text-sm text-fg/90">{item.degree}</span>
                     <span className="font-mono text-xs text-muted">
                       {item.detail} · {item.period}
                     </span>

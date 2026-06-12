@@ -24,16 +24,17 @@ export function Experience() {
 
         <ol className="flex flex-col gap-12 md:gap-16">
           {experience.map((item, i) => (
-            <Reveal key={item.company + item.period} delay={i * 0.06}>
-              <li className="relative pl-8 md:pl-10">
-                {/* node */}
-                <span
-                  aria-hidden="true"
-                  className="absolute left-0 top-1.5 flex h-3.5 w-3.5 items-center justify-center md:h-[19px] md:w-[19px]"
-                >
-                  <span className="h-3.5 w-3.5 rounded-full border-2 border-bg bg-accent md:h-[18px] md:w-[18px]" />
-                </span>
+            <li key={item.company + item.period} className="relative pl-8 md:pl-10">
+              {/* node — kept outside Reveal so its absolute positioning
+                  resolves against the <li>, not GSAP's transformed wrapper */}
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-1.5 flex h-3.5 w-3.5 items-center justify-center md:h-[19px] md:w-[19px]"
+              >
+                <span className="h-3.5 w-3.5 rounded-full border-2 border-bg bg-accent md:h-[18px] md:w-[18px]" />
+              </span>
 
+              <Reveal delay={i * 0.06}>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -69,8 +70,8 @@ export function Experience() {
                     ))}
                   </ul>
                 </div>
-              </li>
-            </Reveal>
+              </Reveal>
+            </li>
           ))}
         </ol>
       </div>

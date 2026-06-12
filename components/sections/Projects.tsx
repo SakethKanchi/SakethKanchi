@@ -55,7 +55,7 @@ export function Projects() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-bg px-4 py-2 text-sm font-semibold text-fg transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-bg px-4 py-2 text-sm font-semibold text-fg transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                     >
                       {link.label}
                       <span aria-hidden="true">{"↗"}</span>
