@@ -113,7 +113,7 @@ export default async function Image() {
             opacity: 0.7,
           }}
         >
-          sakethkanchi.com
+          saketh-kanchi.vercel.app
         </div>
       </div>
     ),

@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://sakethkanchi.com"><img src="https://img.shields.io/badge/Portfolio-sakethkanchi.com-6366f1?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
+  <a href="https://saketh-kanchi.vercel.app"><img src="https://img.shields.io/badge/Portfolio-Live_Demo-6366f1?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
   <a href="https://linkedin.com/in/saketh-kanchi/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
   <a href="mailto:sakethkanchi3@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
   <img src="https://komarev.com/ghpvc/?username=SakethKanchi&style=for-the-badge&color=6366f1" alt="Profile views" />
@@ -61,4 +61,4 @@
 
 ---
 
-<p align="center"><i>This repo also holds the source for my portfolio site (Next.js) → <a href="https://sakethkanchi.com">sakethkanchi.com</a></i></p>
+<p align="center"><i>This repo also holds the source for my portfolio site (Next.js) → <a href="https://saketh-kanchi.vercel.app">saketh-kanchi.vercel.app</a></i></p>
