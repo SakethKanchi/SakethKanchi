@@ -9,7 +9,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const reduced = useReducedMotion();
   useEffect(() => {
     if (reduced) return;
-    const lenis = new Lenis({ autoRaf: false, lerp: 0.1, smoothWheel: true });
+    const lenis = new Lenis({ autoRaf: false, lerp: 0.14, smoothWheel: true });
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);

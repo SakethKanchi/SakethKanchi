@@ -38,10 +38,8 @@ export function Sidebar() {
     }
   }, []);
 
-  const activeIndex = Math.max(0, (NAV_IDS as readonly string[]).indexOf(active));
-
   return (
-    <header className="sidebar-glow relative lg:sticky lg:top-0 lg:flex lg:h-screen lg:max-h-screen lg:flex-col lg:justify-between lg:py-20 lg:pr-8">
+    <header className="relative lg:sticky lg:top-0 lg:flex lg:h-screen lg:max-h-screen lg:flex-col lg:justify-between lg:py-20 lg:pr-8">
       {/* Identity + nav */}
       <div className="relative z-[1] flex flex-col gap-6 lg:gap-8">
         <div className="flex flex-col gap-3">
@@ -66,19 +64,6 @@ export function Sidebar() {
         {/* Scrollspy nav — desktop only (vertical). On mobile we rely on scroll. */}
         <nav aria-label="Section navigation" className="hidden lg:block">
           <ul className="relative flex flex-col">
-            {/* Sliding active indicator — animates between links (not a toggle). */}
-            <span
-              aria-hidden="true"
-              className="nav-indicator pointer-events-none absolute left-0 top-0 z-0 h-7 w-12 rounded-full"
-              style={{
-                transform: `translateY(${activeIndex * 36}px)`,
-                transition: reduced
-                  ? "none"
-                  : "transform 0.5s cubic-bezier(0.16,1,0.3,1)",
-                background:
-                  "linear-gradient(90deg, color-mix(in oklch, var(--accent) 14%, transparent), transparent)",
-              }}
-            />
             {NAV.map((item) => {
               const isActive = active === item.id;
               return (
@@ -92,13 +77,13 @@ export function Sidebar() {
                     <span
                       className={`h-[2px] rounded-full transition-all duration-500 ${
                         isActive
-                          ? "w-12 bg-accent shadow-[0_0_12px_0_color-mix(in_oklch,var(--accent)_75%,transparent)]"
+                          ? "w-12 bg-accent shadow-[0_0_8px_-1px_color-mix(in_oklch,var(--accent)_55%,transparent)]"
                           : "w-6 bg-muted/40 group-hover:w-10 group-hover:bg-fg"
                       }`}
                       style={
                         !reduced
                           ? { transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }
-                          : undefined
+                          : { transition: "none" }
                       }
                     />
                     <span

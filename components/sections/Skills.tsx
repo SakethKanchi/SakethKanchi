@@ -8,10 +8,10 @@ export function Skills() {
       <span aria-hidden="true" className="hairline mb-14 block" />
       <SectionHeading index="04">Skills</SectionHeading>
 
-      <div className="flex flex-col divide-y divide-line">
+      <div className="mt-2 flex flex-col divide-y divide-line">
         {skills.map((group, i) => (
           <Reveal key={group.group} delay={i * 0.05}>
-            <div className="grid grid-cols-1 gap-2 py-4 first:pt-0 sm:grid-cols-[10rem_1fr] sm:gap-6">
+            <div className="grid grid-cols-1 gap-2 py-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
               <h3 className="pt-0.5 text-sm font-semibold text-fg">
                 {group.group}
               </h3>

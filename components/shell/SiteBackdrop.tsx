@@ -24,7 +24,7 @@ export function SiteBackdrop() {
         className="pointer-events-none fixed inset-0 -z-20 overflow-hidden"
         style={{
           background:
-            "radial-gradient(48% 42% at 16% 12%, color-mix(in oklch, var(--accent) 13%, transparent), transparent 72%), radial-gradient(40% 40% at 88% 92%, color-mix(in oklch, var(--accent) 8%, transparent), transparent 70%)",
+            "radial-gradient(58% 52% at 18% 8%, color-mix(in oklch, var(--accent) 10%, transparent), transparent 76%), radial-gradient(40% 40% at 90% 94%, color-mix(in oklch, var(--accent) 7%, transparent), transparent 72%)",
         }}
       />
       <div

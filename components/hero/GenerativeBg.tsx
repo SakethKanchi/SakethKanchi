@@ -196,6 +196,17 @@ export function GenerativeBg() {
 
       instance = new P5(sketch, host);
 
+      // Fade the canvas up once it's actually drawing, so the constellation
+      // eases in instead of hard-popping when the deferred p5 import lands.
+      if (reduceMotion) {
+        host.style.transition = "none";
+        host.style.opacity = "0.35";
+      } else {
+        requestAnimationFrame(() => {
+          if (!cancelled && host) host.style.opacity = "0.35";
+        });
+      }
+
       // recolor on theme switch (next-themes flips data-theme on <html>)
       observer = new MutationObserver(() => {
         const inst = instance as
@@ -238,7 +249,8 @@ export function GenerativeBg() {
     <div
       ref={hostRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.35]"
+      className="pointer-events-none absolute inset-0 overflow-hidden opacity-0"
+      style={{ transition: "opacity 1.1s ease-out" }}
     />
   );
 }

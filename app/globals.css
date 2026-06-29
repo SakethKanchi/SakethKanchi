@@ -167,21 +167,6 @@
   );
 }
 
-/* --- Soft accent glow anchored near the sidebar (radial, very low alpha) --- */
-.sidebar-glow::before {
-  content: "";
-  position: absolute;
-  inset: -10% -30% auto -40%;
-  height: 60vh;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-    60% 50% at 30% 18%,
-    color-mix(in oklch, var(--accent) 16%, transparent),
-    transparent 70%
-  );
-}
-
 /* --- Display name: subtle accent-lit depth via text-shadow glow (NOT gradient text) --- */
 .name-glow {
   text-shadow:
@@ -290,8 +275,7 @@
   .group:hover .thumb-zoom,
   .cta-glow,
   .cta-glow:hover,
-  .underline-anim,
-  .nav-indicator {
+  .underline-anim {
     transition: none !important;
     transform: none !important;
   }
