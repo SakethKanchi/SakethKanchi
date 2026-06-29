@@ -33,7 +33,7 @@
 **AI / Data · Databases**
 
 <p>
-  <img src="https://skillicons.dev/icons?i=sklearn,pandas,postgres,mongodb,sqlite" alt="ai-data" />
+  <img src="https://skillicons.dev/icons?i=sklearn,postgres,mongodb,sqlite" alt="ai-data" />
 </p>
 
 **Cloud & DevOps · Tools**
