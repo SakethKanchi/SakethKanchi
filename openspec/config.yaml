@@ -1,0 +1,83 @@
+schema: spec-driven
+
+context: |
+  Project: Saketh Kanchi — personal portfolio site (greenfield, repo: `~/Code/portfolio`).
+  Pair repo: `~/Code/resume` holds the source of truth for content (resume .tex, project
+  cards in projects/*.md, second-brain vault). This portfolio renders a subset of that
+  content to the web; copy values MUST stay truthful to `Saketh_Kanchi_Resume.tex` and
+  the project cards. Never invent experience, metrics, PRs, or jobs.
+
+  Positioning: Full-Stack AI Engineer (RAG systems, LLM integrations, production full-stack
+  features, edge deployment on Cloudflare Workers). "Founding Engineer" framing stays
+  explicit — do not soften to "developer" or "engineer".
+
+  Stack: Next.js (App Router) + Tailwind v4 + shadcn/ui primitives on demand + Geist
+  Sans/Mono + Framer Motion (sparingly) + lucide-react. Deploy on Vercel.
+  No CMS, no MDX, no live third-party fetches in the request path, no image generation,
+  no WebGL/Three.js, no Locomotive/Lenis scroll libs.
+
+  Reference composite (locked): Surendar Selvaraj (primary anchor, case-study cards
+  with metrics + numbered journey + bracket section headers) + Anirban Banerjee
+  (deployed confirmations: `click anywhere to continue →` splash, `<SK />` seal,
+  `·LTM` role marker + `▹` bullet glyph, grouped tech stack) + bymonolog (numbered
+  case-card index + giant footer-poster CTA). Full notes in `inspiration/`.
+
+  Locked design rules:
+  - Dark default + system light via `prefers-color-scheme`; no theme toggle UI in v1
+  - Top horizontal numbered nav `01. … 05.`; left rail is banned
+  - One accent color only: `sky-400` (Tailwind) on zinc-950 bg
+  - One type system: Geist Sans (body) + Geist Mono (numbers, stack, meta, seal)
+  - Section headers: `[ NN — Section name ]` (amanbuilds numbered bracket variant)
+  - Motion: section enter fade + scroll-revealed stacked hero lines only; banned
+    patterns listed below; `prefers-reduced-motion` disables all motion
+  - Splash auto-skips on repeat via `SessionStorage["splash_seen"]`
+
+  Anti-patterns banned in this project:
+  - Gradient mesh / aurora backgrounds, bento grids, "download my resume" as hero CTA
+  - Live GitHub/Resend GraphQL/REST calls on every request path (cache at build only)
+  - Auto-playing video, WebGL, custom cursors, custom scroll libraries
+  - Floating geometric shape decorations (designer-theater, wrong tone for an engineer)
+  - "N years making users click" hero-metric framing — Saketh is early-career; never
+    lead with years. Use real project metrics only (10k+ downloads, 50+ daily queries,
+    40+ documents indexed, 500+ leads) and only when they exist in the source vault
+  - Fake testimonials / acknowledgements / contributors lists — Saketh built solo,
+    list no contributor credits
+  - Mock telemetry widgets / fake dashboards / emoji chips / marquee separators
+    (these patterns come from amanbuilds.me and are explicitly NOT borrowed)
+  - Screenshots in v1: use placeholder figure slots with "screenshot pending" captions
+    rather than generating fake UI captures
+
+  Content sources (in `~/Code/resume`):
+  - `Saketh_Kanchi_Resume.tex` — hero copy, role headline, summary, skills, experience,
+    project bullets, OSS PRs, certifications, contact links
+  - `projects/ragbench.md` — flagship project deep-dive content
+  - `projects/fund-flow-os.md` — Experience stop 01
+  - `projects/sidequest.md` — Experience stop 02
+  - `projects/drive-rag.md`, `projects/parley.md`, `projects/kitty-vscode-theme.md`,
+    `projects/multiple-disease-prediction.md` — Selected work cards 02–05
+
+  Conventions:
+  - Spec-driven via OpenSpec: agree on proposal → specs → design → tasks before code
+  - All content lives in `content/index.ts` as typed objects — no CMS, no MDX runtime
+  - Star counts hydrate from `data/oss.json` cached at build via `scripts/sync-oss.ts`;
+    fallback to hardcoded truthful floors if GitHub API fails
+  - Single RagBench deep-dive route in v1; generalize to `/projects/[slug]` only in v2
+  - Lighthouse budget: perf ≥ 95, a11y ≥ 95, LCP < 1.2s on cold cable
+
+rules:
+  proposal:
+    - Always include Non-goals
+    - Lead with "ship the smallest portfolio that converts recruiters in 30s"
+    - Do not borrow from designer/studio portfolios (Awwwards-tier) — only engineer
+      or design-engineer personal portfolios are valid references
+  design:
+    - Defend each borrowed pattern by reference site + section in that site
+    - Defend splash, bracket-numbers, `·LTM` marker, and `<SK />` seal against
+      "designer cosplay" charge; if a defense is weak, drop the pattern
+    - Call out the Lighthouse budget and the no-runtime-fetch rule when choosing
+      the star-counts hydration strategy
+  tasks:
+    - Order work so the vertical slice (Splash + Nav + Hero + 1 WorkCard + 1
+      JourneyStop + Footer) lands before any second instance of a component
+    - Max ~2 hour chunks where practical
+    - Each task must be testable from the browser without external services
