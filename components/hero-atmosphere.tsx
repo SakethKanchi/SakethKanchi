@@ -34,7 +34,7 @@ const SNIPPETS: Omit<Snippet, "fontSize">[] = [
   {
     lines: [
       "const agent = await createAgent({",
-      "  model: 'grok',",
+      "  model: 'brain',",
       "  tools: registry,",
       "})",
     ],

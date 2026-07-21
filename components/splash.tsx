@@ -1,11 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { profile } from "@/content";
 
-const KEY = "splash_seen";
+export const SPLASH_SESSION_KEY = "splash_seen";
 const DURATION_MS = 3000;
+
+function clearSplashLock() {
+  if (typeof document === "undefined") return;
+  document.documentElement.removeAttribute("data-splash");
+}
+
+function setSplashLock() {
+  if (typeof document === "undefined") return;
+  document.documentElement.setAttribute("data-splash", "1");
+}
 
 // Type-only loader (editorial-layer v2 — replaces the v1 "click anywhere"
 // splash). Full-viewport overlay:
@@ -17,9 +28,15 @@ const DURATION_MS = 3000;
 //   - immediately on any click / keypress (cancels the counter)
 //   - repeat visit (sessionStorage["splash_seen"] === "1") → skip, onDone now
 //   - prefers-reduced-motion → skip on every visit, onDone now
+//
+// Portaled to document.body so z-index is not trapped under layout <main
+// className="relative z-10"> (which left the fixed nav z-40 on top of the
+// splash). html[data-splash] also hides the nav via CSS for first paint.
 export function Splash({ onDone }: { onDone: () => void }) {
   const reduce = useReducedMotion();
   const [visible, setVisible] = useState(true);
+  // Defer portal until after mount so SSR markup matches the first client paint.
+  const [portaled, setPortaled] = useState(false);
   const [count, setCount] = useState(0);
   const rafRef = useRef<number | null>(null);
   const doneRef = useRef(false);
@@ -31,10 +48,11 @@ export function Splash({ onDone }: { onDone: () => void }) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
+    clearSplashLock();
     setVisible(false);
     if (typeof window !== "undefined") {
       try {
-        sessionStorage.setItem(KEY, "1");
+        sessionStorage.setItem(SPLASH_SESSION_KEY, "1");
       } catch {
         // Private mode / disabled storage — swallow; loader still ends.
       }
@@ -43,8 +61,13 @@ export function Splash({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   useEffect(() => {
+    setPortaled(true);
+  }, []);
+
+  useEffect(() => {
     // Reduced-motion → no loader on any visit.
     if (reduce) {
+      clearSplashLock();
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(false);
       onDone();
@@ -52,12 +75,18 @@ export function Splash({ onDone }: { onDone: () => void }) {
       return;
     }
     // Repeat visit within the session → skip.
-    if (typeof window !== "undefined" && sessionStorage.getItem(KEY)) {
+    if (
+      typeof window !== "undefined" &&
+      sessionStorage.getItem(SPLASH_SESSION_KEY)
+    ) {
+      clearSplashLock();
       setVisible(false);
       onDone();
       doneRef.current = true;
       return;
     }
+
+    setSplashLock();
 
     // First visit: run a 0 → 100 counter over DURATION_MS, then auto-dismiss.
     const start = performance.now();
@@ -84,7 +113,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
 
   if (!visible) return null;
 
-  return (
+  const overlay = (
     <div
       role="button"
       tabIndex={0}
@@ -121,4 +150,12 @@ export function Splash({ onDone }: { onDone: () => void }) {
       </span>
     </div>
   );
+
+  // Portal to body so z-[300] sits above nav (z-40) and the custom cursor
+  // (z-200). Until mount, render inline — nav is already hidden via
+  // html[data-splash] CSS from the layout bootstrap script.
+  if (portaled) {
+    return createPortal(overlay, document.body);
+  }
+  return overlay;
 }

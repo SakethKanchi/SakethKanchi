@@ -226,6 +226,7 @@ export function Nav() {
 
   return (
     <header
+      data-site-nav
       className={cn(
         "fixed inset-x-0 top-0 z-40",
         "border-b border-zinc-900/60 bg-zinc-950/70 backdrop-blur",

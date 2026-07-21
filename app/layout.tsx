@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Fraunces } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Nav } from "@/components/nav";
@@ -106,6 +107,16 @@ export default function RootLayout({
     >
       <body className="min-h-dvh bg-background text-foreground antialiased">
         {/*
+          Pre-hydration splash lock — hides the fixed nav before React mounts so
+          it never peeks above the loader. Mirrors splash.tsx skip rules:
+          sessionStorage splash_seen / prefers-reduced-motion → leave unlocked.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(sessionStorage.getItem("splash_seen")==="1")return;if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;document.documentElement.setAttribute("data-splash","1");}catch(e){}})();`,
+          }}
+        />
+        {/*
           Film grain — fixed below all content. pointer-events-none + aria-hidden
           means it never intercepts input or appears in the accessibility tree.
         */}
@@ -140,6 +151,7 @@ export default function RootLayout({
           </main>
         </LenisProvider>
         <CustomCursor />
+        <Analytics />
       </body>
     </html>
   );

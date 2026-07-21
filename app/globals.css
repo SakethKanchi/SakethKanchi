@@ -198,3 +198,11 @@
 .hero-atmosphere-canvas {
   opacity: 1;
 }
+
+/* Splash lock — set on <html data-splash="1"> before paint (inline script) and
+   while the loader runs. Keeps the fixed nav from peeking above the splash
+   (splash lives under main's z-10 stacking context until portaled). */
+html[data-splash="1"] [data-site-nav] {
+  visibility: hidden;
+  pointer-events: none;
+}
