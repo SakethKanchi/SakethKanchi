@@ -24,7 +24,7 @@ Three layers (do not confuse them):
 | Giant footer poster CTA | bymonolog "Let's build / an experience / That moves"; Anirban "Let's build something / together." | Single oversized 3-line type CTA; no animation; no card chrome; honest phrasing (`Let's build / something that / ships.`) carries Saketh's shipped-and-shipping voice without sentimentality |
 | `[ NN — ]` numbering + `01 / 05` on each card | bymonolog `SS / 05` numbering; Surendar `Protected 01` index | Both are engineer-or-designer personal portfolios; numbering aids reading and signals position within an archive; the slash form `01 / 05` is the simplest truthful position indicator |
 | No live third-party fetch at request time | Spec rule + RagBench convention | Live GitHub calls kill LCP and break on rate limits; the cache at build with floor fallback is honest about staleness |
-| RagBench deep-dive honest-WIP callout | Spec rule + AGENTS.md truthfulness rule | RagBench's own project note says "fill only after real judged evals"; the deep-dive surfaces that truth instead of hiding it. borrows Ryoku's "kintsugi beta shows its cracks" attitude without borrowing its art serial |
+| RagBench deep-dive honest-WIP callout | Spec rule + AGENTS.md truthfulness rule | RagBench's own project note says "fill only after real judged evals"; the deep-dive surfaces that truth instead of hiding it. |
 | One deep-dive route, hardcoded RagBench content | Spec rule | Generalized `/projects/[slug]` only needs work once a second deep-dive exists. Forcing a dynamic template now either ships empty second pages or invites fabricated content for other projects. Hardcoding RagBench in v1 is the honest minimum |
 
 ### Research bases

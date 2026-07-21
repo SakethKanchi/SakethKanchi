@@ -1,21 +1,35 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-import { Fraunces } from "next/font/google";
+import { Fraunces, Space_Grotesk, Space_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Nav } from "@/components/nav";
-import { CustomCursor } from "@/lib/use-cursor";
+import { CustomCursorLazy } from "@/components/custom-cursor-lazy";
 import { profile } from "@/content";
 import { LenisProvider } from "@/components/lenis-provider";
 
-// Fraunces — display serif (hero name, section labels, contact poster, Kitty
-// counter). Weights 400 + 600, `display: swap` so LCP text paints in the
-// serif fallback then swaps without relayout. Exposes `--font-display`.
+// Body / UI — medium for section titles, regular for copy. No 600/700 needed.
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-space-grotesk",
+  fallback: ["system-ui", "sans-serif"],
+});
+
+// Mono labels only use regular weight in the design system.
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-space-mono",
+  fallback: ["ui-monospace", "monospace"],
+});
+
+// Display — only bold is used (hero / splash / contact / metrics).
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "600"],
+  weight: ["700"],
   style: ["normal"],
   display: "swap",
   variable: "--font-fraunces",
@@ -42,6 +56,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -66,7 +81,6 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD Person schema (brief §11.4).
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -83,11 +97,9 @@ const personJsonLd = {
   sameAs: [profile.github, profile.linkedin],
 };
 
-// Film grain — inline SVG feTurbulence noise as a base64 data-URI. ~380 bytes,
-// no external fetch. Rendered as a fixed pointer-events-none aria-hidden
-// overlay (globals: mix-blend-overlay, very low opacity) on every route.
+// Film grain — low-opacity lo-fi texture over pure black.
 const GRAIN_URI =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC45IiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+";
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC45IiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaGxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+";
 
 export default function RootLayout({
   children,
@@ -98,44 +110,39 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        GeistSans.variable,
-        GeistMono.variable,
+        spaceGrotesk.variable,
+        spaceMono.variable,
         fraunces.variable,
         "font-sans",
       )}
       suppressHydrationWarning
     >
-      <body className="min-h-dvh bg-background text-foreground antialiased">
-        {/*
-          Pre-hydration splash lock — hides the fixed nav before React mounts so
-          it never peeks above the loader. Mirrors splash.tsx skip rules:
-          sessionStorage splash_seen / prefers-reduced-motion → leave unlocked.
-        */}
+      <body className="min-h-dvh bg-paper text-ink-dim antialiased">
+        {/* Theme first — prevents flash of wrong paper color before paint. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{if(sessionStorage.getItem("splash_seen")==="1")return;if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;document.documentElement.setAttribute("data-splash","1");}catch(e){}})();`,
           }}
         />
-        {/*
-          Film grain — fixed below all content. pointer-events-none + aria-hidden
-          means it never intercepts input or appears in the accessibility tree.
-        */}
         <div
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-[1] opacity-[0.035] mix-blend-overlay"
-          style={{ backgroundImage: `url("${GRAIN_URI}")` }}
+          className="pointer-events-none fixed inset-0 z-[1] mix-blend-overlay"
+          style={{
+            backgroundImage: `url("${GRAIN_URI}")`,
+            opacity: "var(--grain-opacity)",
+          }}
         />
-        {/*
-          Skip-to-content — first focusable element. Offscreen (NOT sr-only)
-          so Chrome's sequential tab order keeps it: sr-only's clip-path makes
-          the element invisible to Tab. Translate-down on focus reveals it.
-        */}
         <a
           href="#main"
           className={cn(
-            "absolute left-4 top-4 z-50 -translate-y-16 px-4 py-2 font-mono text-sm text-zinc-100 opacity-0 transition",
+            "absolute left-4 top-4 z-50 -translate-y-16 px-4 py-2 mono-body text-ink opacity-0 transition",
             "focus:translate-y-0 focus:opacity-100",
-            "focus:rounded-md focus:bg-zinc-900 focus:outline focus:outline-2 focus:outline-[var(--ring)]",
+            "focus:rounded-[2px] focus:bg-paper-raised focus:outline focus:outline-2 focus:outline-[var(--ember)]",
           )}
         >
           Skip to content
@@ -150,7 +157,7 @@ export default function RootLayout({
             {children}
           </main>
         </LenisProvider>
-        <CustomCursor />
+        <CustomCursorLazy />
         <Analytics />
       </body>
     </html>

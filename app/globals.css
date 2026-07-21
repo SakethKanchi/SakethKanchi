@@ -1,21 +1,32 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-/* Locked: dark is the default. Light opt-in is via `prefers-color-scheme: light`.
-   No `.dark` class strategy in v1; no theme-toggle UI. */
-@custom-variant light (&:where(@media (prefers-color-scheme: light)));
+/* Light mode via html[data-theme="light"] — set by bootstrap script + toggle. */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Editorial ink system
+   Dark  — "Ink on Black"  (paper #000, bone ink ramp)
+   Light — "Ink on Bone"   (warm paper, near-black ink; same structure)
+   Copper ember accent, 2px radius, no shadows.
+   Theme via html[data-theme="light"|"dark"] (toggle + localStorage).
+   ───────────────────────────────────────────────────────────────────────── */
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
-  --font-display: var(--font-fraunces), Georgia, Cambria, "Times New Roman",
-    serif;
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
 
-  /* Editorial identity surfaces. */
-  --color-bg: var(--color-zinc-950);
-  --color-fg: var(--color-zinc-100);
-  --color-muted: var(--color-zinc-500);
+  /* Spacing scale (4px base) */
+  --spacing-s1: 4px;
+  --spacing-s2: 8px;
+  --spacing-s3: 12px;
+  --spacing-s4: 16px;
+  --spacing-s5: 24px;
+  --spacing-s6: 32px;
+  --spacing-s7: 48px;
+  --spacing-s8: 64px;
+
+  --radius-hairline: 2px;
 }
 
 @theme inline {
@@ -51,104 +62,210 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --radius-4xl: 2px;
 }
 
-/* Dark default (matches Tailwind zinc-950 / zinc-100 / sky-400 accent). */
+/* ── Dark default: Ink on Black ─────────────────────────────────────────── */
 :root {
-  --background: oklch(0.141 0.005 285.823);         /* zinc-950 */
-  --foreground: oklch(0.985 0 0);                    /* zinc-100 */
-  --card: oklch(0.21 0.006 285.885);                 /* zinc-900 */
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);            /* zinc-800 */
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.717 0.008 286.033);
-  --accent: oklch(0.746 0.16 224.0);                  /* sky-400 — locked */
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.746 0.16 224.0);                    /* match accent */
-  --chart-1: oklch(0.746 0.16 224.0);
-  --chart-2: oklch(0.717 0.008 286.033);
-  --chart-3: oklch(0.556 0.008 286.033);
-  --chart-4: oklch(0.439 0.008 286.033);
-  --chart-5: oklch(0.371 0.008 286.033);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.746 0.16 224.0);
-  --sidebar-primary-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.746 0.16 224.0);
+  /* Surfaces */
+  --paper: #000000;
+  --paper-raised: #0a0a0a;
+
+  /* Ink ramp (warm bone) — from design.md */
+  --ink: #cdc4ba;
+  --ink-dim: #b0a9a0;
+  --ink-muted: #958f87;
+  --ink-faint: #7a756e;
+  --ink-on-bone: #000000;
+
+  /* Ember — warm copper accent */
+  --ember: #d4a06a;
+  --ember-bright: #e8b87a;
+  --ember-dim: #a87d52;
+  --ember-faint: rgba(212, 160, 106, 0.18);
+  --ember-line: rgba(212, 160, 106, 0.35);
+  --ember-on: #0a0604;
+
+  /* Secondary cool accent — status / success */
+  --sage: #8aab92;
+  --sage-faint: rgba(138, 171, 146, 0.16);
+
+  /* Hairline at 26% opacity of ink (design.md) */
+  --line: rgba(205, 196, 186, 0.26);
+  --line-strong: rgba(205, 196, 186, 0.4);
+
+  /* Layout */
+  --gutter: clamp(1.15rem, 4vw, 3rem);
+  --section-y: clamp(3rem, 7vw, 5rem);
+  --pad-y: 0.62rem;
+  --pad-x: 1.1rem;
+  --radius: 2px;
+
+  --grain-opacity: 0.04;
+
+  /* Map to shadcn semantic slots */
+  --background: #000000;
+  --foreground: #b0a9a0;
+  --card: #0a0a0a;
+  --card-foreground: #cdc4ba;
+  --popover: #0a0a0a;
+  --popover-foreground: #cdc4ba;
+  --primary: #d4a06a;
+  --primary-foreground: #0a0604;
+  --secondary: #0a0a0a;
+  --secondary-foreground: #b0a9a0;
+  --muted: #0a0a0a;
+  --muted-foreground: #958f87;
+  --accent: #d4a06a;
+  --accent-foreground: #0a0604;
+  --destructive: #a35a4a;
+  --border: rgba(205, 196, 186, 0.26);
+  --input: rgba(205, 196, 186, 0.26);
+  --ring: #d4a06a;
+
+  --chart-1: #d4a06a;
+  --chart-2: #8aab92;
+  --chart-3: #cdc4ba;
+  --chart-4: #958f87;
+  --chart-5: #7a756e;
+
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #cdc4ba;
+  --sidebar-primary: #d4a06a;
+  --sidebar-primary-foreground: #0a0604;
+  --sidebar-accent: #0a0a0a;
+  --sidebar-accent-foreground: #cdc4ba;
+  --sidebar-border: rgba(205, 196, 186, 0.26);
+  --sidebar-ring: #d4a06a;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: oklch(0.985 0 0);
-    --foreground: oklch(0.141 0.005 285.823);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.141 0.005 285.823);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.141 0.005 285.823);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.746 0.16 224.0);                /* sky-400 in light too */
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.746 0.16 224.0);
-    --chart-1: oklch(0.746 0.16 224.0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-  }
+/* ── Light: Ink on Bone ───────────────────────────────────────────────────
+   Applied via html[data-theme="light"] (toggle + bootstrap script).
+   Fallback: system preference when data-theme is not set yet / no-JS. */
+html[data-theme="light"] {
+  /* Surfaces — warm bone paper (ink family from design.md) */
+  --paper: #f4f0e8;
+  --paper-raised: #ebe6dc;
 
-  /* v1 components use hardcoded Tailwind `zinc-*` ink/surface utilities
-     (text-zinc-100, bg-zinc-900, ...) rather than semantic tokens. Tailwind v4
-     compiles those to `var(--color-zinc-*)` references, so we make light mode
-     adapt by reflecting the zinc ramp about its midpoint here — dark mode is
-     untouched and stays pixel-identical. Reflection (100↔900, 200↔800, …, 500
-     fixed) preserves every fg/bg contrast pair, so AA in dark ⇒ AA in light. */
-  :root {
-    --color-zinc-50: #09090b; /* ↔ 950 */
-    --color-zinc-100: #18181b; /* ↔ 900 */
-    --color-zinc-200: #27272a; /* ↔ 800 */
-    --color-zinc-300: #3f3f46; /* ↔ 700 */
-    --color-zinc-400: #52525c; /* ↔ 600 */
-    --color-zinc-500: #71717b; /* midpoint, unchanged */
-    --color-zinc-600: #9f9fa9; /* ↔ 400 */
-    --color-zinc-700: #d4d4d8; /* ↔ 300 */
-    --color-zinc-800: #e4e4e7; /* ↔ 200 */
-    --color-zinc-900: #f4f4f5; /* ↔ 100 */
-    --color-zinc-950: #fafafa; /* ↔ 50 */
+  /* Ink ramp — near-black warm */
+  --ink: #141210;
+  --ink-dim: #2c2823;
+  --ink-muted: #5a544c;
+  --ink-faint: #7a7369;
+  --ink-on-bone: #f4f0e8;
+
+  /* Ember — deeper copper so it holds on bone paper */
+  --ember: #b4783a;
+  --ember-bright: #9a642e;
+  --ember-dim: #8a5e32;
+  --ember-faint: rgba(180, 120, 58, 0.14);
+  --ember-line: rgba(180, 120, 58, 0.42);
+  --ember-on: #faf7f0;
+
+  --sage: #4f7a5c;
+  --sage-faint: rgba(79, 122, 92, 0.14);
+
+  --line: rgba(20, 18, 16, 0.14);
+  --line-strong: rgba(20, 18, 16, 0.24);
+
+  --grain-opacity: 0.03;
+
+  --background: #f4f0e8;
+  --foreground: #2c2823;
+  --card: #ebe6dc;
+  --card-foreground: #141210;
+  --popover: #f4f0e8;
+  --popover-foreground: #141210;
+  --primary: #b4783a;
+  --primary-foreground: #faf7f0;
+  --secondary: #ebe6dc;
+  --secondary-foreground: #2c2823;
+  --muted: #ebe6dc;
+  --muted-foreground: #5a544c;
+  --accent: #b4783a;
+  --accent-foreground: #faf7f0;
+  --destructive: #a35a4a;
+  --border: rgba(20, 18, 16, 0.14);
+  --input: rgba(20, 18, 16, 0.14);
+  --ring: #b4783a;
+
+  --chart-1: #b4783a;
+  --chart-2: #4f7a5c;
+  --chart-3: #2c2823;
+  --chart-4: #5a544c;
+  --chart-5: #7a7369;
+
+  --sidebar: #ebe6dc;
+  --sidebar-foreground: #141210;
+  --sidebar-primary: #b4783a;
+  --sidebar-primary-foreground: #faf7f0;
+  --sidebar-accent: #ebe6dc;
+  --sidebar-accent-foreground: #141210;
+  --sidebar-border: rgba(20, 18, 16, 0.14);
+  --sidebar-ring: #b4783a;
+
+  color-scheme: light;
+}
+
+/* No data-theme yet (pre-script / no-JS): follow system light preference. */
+@media (prefers-color-scheme: light) {
+  html:not([data-theme]) {
+    --paper: #f4f0e8;
+    --paper-raised: #ebe6dc;
+    --ink: #141210;
+    --ink-dim: #2c2823;
+    --ink-muted: #5a544c;
+    --ink-faint: #7a7369;
+    --ink-on-bone: #f4f0e8;
+    --ember: #b4783a;
+    --ember-bright: #9a642e;
+    --ember-dim: #8a5e32;
+    --ember-faint: rgba(180, 120, 58, 0.14);
+    --ember-line: rgba(180, 120, 58, 0.42);
+    --ember-on: #faf7f0;
+    --sage: #4f7a5c;
+    --sage-faint: rgba(79, 122, 92, 0.14);
+    --line: rgba(20, 18, 16, 0.14);
+    --line-strong: rgba(20, 18, 16, 0.24);
+    --grain-opacity: 0.03;
+    --background: #f4f0e8;
+    --foreground: #2c2823;
+    --card: #ebe6dc;
+    --card-foreground: #141210;
+    --popover: #f4f0e8;
+    --popover-foreground: #141210;
+    --primary: #b4783a;
+    --primary-foreground: #faf7f0;
+    --secondary: #ebe6dc;
+    --secondary-foreground: #2c2823;
+    --muted: #ebe6dc;
+    --muted-foreground: #5a544c;
+    --accent: #b4783a;
+    --accent-foreground: #faf7f0;
+    --destructive: #a35a4a;
+    --border: rgba(20, 18, 16, 0.14);
+    --input: rgba(20, 18, 16, 0.14);
+    --ring: #b4783a;
+    --chart-1: #b4783a;
+    --chart-2: #4f7a5c;
+    --chart-3: #2c2823;
+    --chart-4: #5a544c;
+    --chart-5: #7a7369;
+    --sidebar: #ebe6dc;
+    --sidebar-foreground: #141210;
+    --sidebar-primary: #b4783a;
+    --sidebar-primary-foreground: #faf7f0;
+    --sidebar-accent: #ebe6dc;
+    --sidebar-accent-foreground: #141210;
+    --sidebar-border: rgba(20, 18, 16, 0.14);
+    --sidebar-ring: #b4783a;
+    color-scheme: light;
   }
 }
 
@@ -156,30 +273,247 @@
   html {
     color-scheme: dark;
   }
+  html[data-theme="light"] {
+    color-scheme: light;
+  }
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: var(--paper);
+    color: var(--ink-dim);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
+    font-size: 16px;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
   * {
-    border-color: var(--border);
+    border-color: var(--line);
+  }
+  ::selection {
+    background: var(--ember-faint);
+    color: var(--ember-bright);
+  }
+  html[data-theme="light"] ::selection {
+    color: var(--ember);
   }
 }
 
-/* Line-mask reveal — outer clip, inner span translates up out of the mask.
-   Height is set by the inner content, so the mask contributes zero CLS. */
+/* Type utilities — map design tokens to reusable classes */
+@layer utilities {
+  .text-ink {
+    color: var(--ink);
+  }
+  .text-ink-dim {
+    color: var(--ink-dim);
+  }
+  .text-ink-muted {
+    color: var(--ink-muted);
+  }
+  .text-ink-faint {
+    color: var(--ink-faint);
+  }
+
+  .text-ember {
+    color: var(--ember);
+  }
+  .text-ember-bright {
+    color: var(--ember-bright);
+  }
+  .text-ember-dim {
+    color: var(--ember-dim);
+  }
+  .text-sage {
+    color: var(--sage);
+  }
+
+  .bg-paper {
+    background-color: var(--paper);
+  }
+  .bg-paper-raised {
+    background-color: var(--paper-raised);
+  }
+  .bg-ember {
+    background-color: var(--ember);
+  }
+  .bg-ember-faint {
+    background-color: var(--ember-faint);
+  }
+  .bg-sage-faint {
+    background-color: var(--sage-faint);
+  }
+
+  .border-line {
+    border-color: var(--line);
+  }
+  .border-line-strong {
+    border-color: var(--line-strong);
+  }
+  .border-ember {
+    border-color: var(--ember-line);
+  }
+  .border-ember-solid {
+    border-color: var(--ember);
+  }
+
+  /* Uppercase spaced label — nav, dossier keys, stat labels */
+  .label-upper {
+    font-family: var(--font-sans);
+    font-size: 10.56px;
+    font-weight: 500;
+    line-height: 17.11px;
+    letter-spacing: 2.32px;
+    text-transform: uppercase;
+  }
+
+  /* Mono body — terminal metadata */
+  .mono-body {
+    font-family: var(--font-mono);
+    font-size: 12.16px;
+    font-weight: 400;
+    line-height: 20.67px;
+  }
+
+  /* Mono micro-label — version, edition, barcode text */
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 9.92px;
+    font-weight: 400;
+    line-height: 16.07px;
+    letter-spacing: 1.79px;
+    text-transform: uppercase;
+  }
+
+  .mono-micro {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 9px;
+    letter-spacing: 1.44px;
+    text-transform: uppercase;
+  }
+
+  /* CTA button label */
+  .btn-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 17.82px;
+    letter-spacing: 1.32px;
+    text-transform: uppercase;
+  }
+
+  /* Ember-filled primary CTA — copper hit on black */
+  .btn-bone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--pad-y) var(--pad-x);
+    border-radius: var(--radius);
+    background: var(--ember);
+    color: var(--ember-on);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 17.82px;
+    letter-spacing: 1.32px;
+    text-transform: uppercase;
+    border: 1px solid var(--ember);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .btn-bone:hover {
+    background: transparent;
+    color: var(--ember);
+    border-color: var(--ember);
+  }
+  .btn-bone:focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+  }
+
+  /* Ghost / outline CTA */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--pad-y) var(--pad-x);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--ink-dim);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 17.82px;
+    letter-spacing: 1.32px;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--ember-line);
+    color: var(--ember);
+  }
+  .btn-ghost:focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+  }
+
+  /* Dossier field row */
+  .dossier-key {
+    font-family: var(--font-sans);
+    font-size: 10.56px;
+    font-weight: 500;
+    line-height: 17.11px;
+    letter-spacing: 2.32px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .dossier-val {
+    font-family: var(--font-sans);
+    font-size: 14.4px;
+    font-weight: 400;
+    line-height: 23.33px;
+    color: var(--ink-dim);
+  }
+
+  /* Decorative barcode bars — mostly ink, periodic ember ticks */
+  .barcode {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    height: 28px;
+  }
+  .barcode span {
+    display: block;
+    width: 1px;
+    background: var(--ink-faint);
+    opacity: 0.55;
+  }
+  .barcode span:nth-child(3n) {
+    width: 2px;
+  }
+  .barcode span:nth-child(5n) {
+    width: 1px;
+    opacity: 0.35;
+  }
+  .barcode span:nth-child(7n) {
+    width: 3px;
+    background: var(--ember);
+    opacity: 0.7;
+  }
+  .barcode span:nth-child(11n) {
+    background: var(--ember);
+    opacity: 0.45;
+  }
+}
+
+/* Line-mask reveal — outer clip, inner span translates up out of the mask. */
 .line-mask {
   display: block;
   overflow: hidden;
-}
-
-@media (prefers-color-scheme: light) {
-  html {
-    color-scheme: light;
-  }
 }
 
 /* Honor reduced motion globally — Framer Motion respects this as well. */
@@ -194,14 +528,7 @@
   }
 }
 
-/* Hero code atmosphere — canvas paints scheme-aware colors; no photo filters. */
-.hero-atmosphere-canvas {
-  opacity: 1;
-}
-
-/* Splash lock — set on <html data-splash="1"> before paint (inline script) and
-   while the loader runs. Keeps the fixed nav from peeking above the splash
-   (splash lives under main's z-10 stacking context until portaled). */
+/* Splash lock — hide fixed nav while loader runs */
 html[data-splash="1"] [data-site-nav] {
   visibility: hidden;
   pointer-events: none;

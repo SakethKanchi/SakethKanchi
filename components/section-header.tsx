@@ -4,17 +4,14 @@ import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
-  render: string; // "01" | "02" | ...
+  render: string;
   label: string;
   className?: string;
   reveal?: "line" | "word";
-  // Optional `as` for heading level. Default h2 (section landmark heading).
   as?: "h1" | "h2" | "h3";
 }
 
-// `[ NN — Label ]` — Surendar/amanbuilds numbered bracket.
-// Brackets + number + em-dash in Geist Mono, label in Geist Sans.
-// Zinc-500 chrome, zinc-100 label, wide letter-spaced.
+// Section label — mono index + hairline + Space Grotesk title.
 export function SectionHeader({
   render,
   label,
@@ -27,23 +24,16 @@ export function SectionHeader({
   return (
     <Tag
       className={cn(
-        "font-mono text-xs uppercase tracking-[0.25em] text-zinc-500",
-        "flex items-center gap-2",
+        "flex flex-wrap items-baseline gap-x-4 gap-y-2",
         className,
       )}
     >
-      <span aria-hidden data-section-label-chrome className="text-zinc-500">
-        [
+      <span className="mono-label tabular-nums text-ember">
+        {render} //
       </span>
-      <span data-section-label-chrome className="text-zinc-500 tabular-nums">
-        {render}
-      </span>
-      <span aria-hidden data-section-label-chrome className="text-zinc-500">
-        —
-      </span>
-      <span className="font-display text-sm normal-case tracking-[0.15em] text-zinc-100">
+      <span className="font-sans text-[clamp(1.35rem,2.5vw,1.55rem)] font-medium tracking-tight text-ink">
         {reveal === "word" ? (
-          <span className="inline-flex gap-[0.15em]">
+          <span className="inline-flex gap-[0.2em]">
             {label.split(" ").map((word, index) => (
               <span
                 key={`${word}-${index}`}
@@ -70,9 +60,14 @@ export function SectionHeader({
           label
         )}
       </span>
-      <span aria-hidden data-section-label-chrome className="text-zinc-500">
-        ]
-      </span>
+      <span
+        aria-hidden
+        className="hidden h-px min-w-[3rem] flex-1 sm:block"
+        style={{
+          background:
+            "linear-gradient(90deg, var(--ember-line), var(--line) 40%, transparent)",
+        }}
+      />
     </Tag>
   );
 }

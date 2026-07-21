@@ -5,14 +5,10 @@ import { education } from "@/content";
 
 export function EducationSection() {
   return (
-    <SectionWrapper
-      id="education"
-      aria-label="Education"
-      className="px-6 sm:px-10"
-    >
+    <SectionWrapper id="education" aria-label="Education">
       <div className="mx-auto max-w-7xl 2xl:max-w-[90rem]">
         <SectionHeader render="03" label="Education" reveal="word" />
-        <div className="mt-10">
+        <div className="mt-8 border-b border-line">
           {education.map((s) => (
             <JourneyStop key={s.index} stop={s} />
           ))}

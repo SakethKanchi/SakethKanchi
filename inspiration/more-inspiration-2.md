@@ -13,7 +13,7 @@ He's literally a "Design & Code" freelancer — closer to Saketh's lane than Sur
 
 **Structure:**
 - Hero with a slogan that stacks line-by-line as you scroll: "Design shapes the world / not as decoration, but as a / force that leaves a mark. / It defines how your / brand is perceived and / how it's experienced. / Leave yours."
-- "The Cavalry / is here" — a signature/seal-style mark (like the 力 in ryoku)
+- "The Cavalry / is here" — a signature/seal-style mark
 - Hero timestamp: `9:00:24 CET ENS` — live local time anchor. Borrowable as personality signal.
 - Works archive (Aug 2024–NOW): 6 case cards, each with title + a one-line discipline label
   - R—K — Identity + Art Direction
@@ -84,7 +84,7 @@ Source: Awwwards Developer Award + Portfolio Honors Feb 2026
 Film director's portfolio. Each project is a horizontal-scroll card with `8 Part Docuseries / TV & FILM` style metadata header and embedded trailer video. Numbered nav: `01. Work / 02. Reportage / 03. About / 04. Archive / 05. Contact`.
 
 **Borrowable (only one pattern):**
-- **Numbered nav "01. Work / 02. About / 03. Archive / 04. Contact"** — editorial-chapter numbering on the nav itself, not just on cards. Same pattern as ryoku and satoshiwatanabe. Works for Saketh as: `01. Work / 02. About / 03. Open Source / 04. Contact`.
+- **Numbered nav "01. Work / 02. About / 03. Archive / 04. Contact"** — editorial-chapter numbering on the nav itself, not just on cards. Same pattern as satoshiwatanabe. Works for Saketh as: `01. Work / 02. About / 03. Open Source / 04. Contact`.
 
 **Not borrowable:**
 - Horizontal film-trailer cards — Saketh has no video content.

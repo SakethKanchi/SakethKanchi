@@ -5,14 +5,10 @@ import { experience } from "@/content";
 
 export function ExperienceSection() {
   return (
-    <SectionWrapper
-      id="experience"
-      aria-label="Experience"
-      className="px-6 sm:px-10"
-    >
+    <SectionWrapper id="experience" aria-label="Experience">
       <div className="mx-auto max-w-7xl 2xl:max-w-[90rem]">
         <SectionHeader render="02" label="Experience" reveal="word" />
-        <div className="mt-10">
+        <div className="mt-8 border-b border-line">
           {experience.map((s) => (
             <JourneyStop key={s.index} stop={s} />
           ))}

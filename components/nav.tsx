@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,9 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { KanjiMark } from "@/components/kanji-mark";
 
-// Section registry — order matches the home nav.
 const SECTIONS = [
   { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
@@ -21,27 +22,39 @@ const SECTIONS = [
   { id: "contact", label: "Contact" },
 ] as const;
 
-// Resume PDF shipped in /public (also available at the clean /resume.pdf alias).
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const RESUME_URL = `${BASE_PATH}/resume.pdf`;
 
-// <SK /> seal — top-left wordmark. Monospace, accent ring on focus.
 function Seal() {
   return (
     <a
       href="#top"
       className={cn(
-        "font-mono text-sm tracking-[0.15em] text-zinc-100",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]",
+        "group flex items-center gap-2 text-ink",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
       )}
       aria-label="Saketh Kanchi — home"
     >
-      &lt;SK /&gt;
+      <KanjiMark
+        className={cn(
+          "h-[1.125rem] w-[1.125rem] text-ember",
+          "transition-transform duration-200 ease-out",
+          "group-hover:scale-110",
+        )}
+      />
+      <span
+        className={cn(
+          "mono-label text-ink-muted",
+          "transition-colors duration-150",
+          "group-hover:text-ink",
+        )}
+      >
+        SK
+      </span>
     </a>
   );
 }
 
-// Desktop nav link — number prefix paints sky-400 when active.
 function DesktopLink({
   num,
   label,
@@ -57,22 +70,30 @@ function DesktopLink({
     <a
       href={href}
       className={cn(
-        "group font-mono text-xs tracking-[0.15em] transition-colors",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]",
+        "group relative label-upper",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
       )}
     >
       <span
         className={cn(
-          "tabular-nums transition-colors",
-          active ? "text-[var(--accent)]" : "text-zinc-500",
+          "tabular-nums transition-colors duration-150",
+          active
+            ? "text-ember"
+            : "text-ink-faint group-hover:text-ember",
         )}
       >
         {num}.
       </span>{" "}
       <span
         className={cn(
-          "uppercase",
-          active ? "text-zinc-100" : "text-zinc-400 group-hover:text-zinc-100",
+          "relative inline-block",
+          /* underline grows left → right on hover / active — same language as MonoLink */
+          "bg-[linear-gradient(var(--ember),var(--ember))] bg-no-repeat",
+          "bg-[length:0%_1px] bg-[position:0_100%]",
+          "transition-[background-size,color] duration-300 ease-out",
+          active
+            ? "bg-[length:100%_1px] text-ink"
+            : "text-ink-muted group-hover:bg-[length:100%_1px] group-hover:text-ink",
         )}
       >
         {label}
@@ -83,10 +104,7 @@ function DesktopLink({
 
 function DesktopNav({ active }: { active: string | null }) {
   return (
-    <nav
-      aria-label="Sections"
-      className="hidden items-center gap-6 lg:flex"
-    >
+    <nav aria-label="Sections" className="hidden items-center gap-6 lg:flex">
       {SECTIONS.map((s, i) => (
         <DesktopLink
           key={s.id}
@@ -96,18 +114,27 @@ function DesktopNav({ active }: { active: string | null }) {
           active={active === s.id}
         />
       ))}
-      <span aria-hidden className="h-4 w-px bg-zinc-700" />
+      <span aria-hidden className="h-3 w-px bg-[var(--line)]" />
       <a
         href={RESUME_URL}
         rel="noreferrer noopener"
         target="_blank"
         className={cn(
-          "font-mono text-xs tracking-[0.15em] text-zinc-400 hover:text-zinc-100",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]",
+          "group label-upper text-ink-muted",
+          "transition-colors duration-150 hover:text-ember",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
         )}
       >
-        Resume ↗
+        Resume{" "}
+        <span
+          aria-hidden
+          className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        >
+          ↗
+        </span>
       </a>
+      <span aria-hidden className="h-3 w-px bg-[var(--line)]" />
+      <ThemeToggle />
     </nav>
   );
 }
@@ -122,12 +149,16 @@ function MobileNav({ active }: { active: string | null }) {
               variant="ghost"
               size="icon"
               aria-label="Open navigation"
+              className="text-ink-dim hover:bg-transparent hover:text-ember"
             />
           }
         >
           <Menu />
         </SheetTrigger>
-        <SheetContent side="right" className="w-72 p-6">
+        <SheetContent
+          side="right"
+          className="w-72 border-l border-line bg-paper p-6"
+        >
           <nav aria-label="Sections" className="flex flex-col gap-5">
             {SECTIONS.map((s, i) => (
               <SheetClose
@@ -136,22 +167,26 @@ function MobileNav({ active }: { active: string | null }) {
                   <a
                     href={`#${s.id}`}
                     className={cn(
-                      "font-mono text-sm tracking-[0.15em]",
-                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]",
+                      "group label-upper",
+                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
                     )}
                   >
                     <span
                       className={cn(
-                        "tabular-nums",
-                        active === s.id ? "text-[var(--accent)]" : "text-zinc-500",
+                        "tabular-nums transition-colors duration-150",
+                        active === s.id
+                          ? "text-ember"
+                          : "text-ink-faint group-hover:text-ember",
                       )}
                     >
                       {String(i + 1).padStart(2, "0")}.
                     </span>{" "}
                     <span
                       className={cn(
-                        "uppercase",
-                        active === s.id ? "text-zinc-100" : "text-zinc-300",
+                        "transition-colors duration-150",
+                        active === s.id
+                          ? "text-ink"
+                          : "text-ink-muted group-hover:text-ink",
                       )}
                     >
                       {s.label}
@@ -160,16 +195,22 @@ function MobileNav({ active }: { active: string | null }) {
                 }
               />
             ))}
-            <span aria-hidden className="mt-2 h-px w-full bg-zinc-800" />
+            <span aria-hidden className="mt-2 h-px w-full bg-[var(--line)]" />
             <SheetClose
               render={
                 <a
                   href={RESUME_URL}
                   rel="noreferrer noopener"
                   target="_blank"
-                  className="font-mono text-sm tracking-[0.15em] text-zinc-400 hover:text-zinc-100"
+                  className="group label-upper text-ink-muted transition-colors duration-150 hover:text-ember"
                 >
-                  Resume ↗
+                  Resume{" "}
+                  <span
+                    aria-hidden
+                    className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  >
+                    ↗
+                  </span>
                 </a>
               }
             />
@@ -181,62 +222,108 @@ function MobileNav({ active }: { active: string | null }) {
 }
 
 export function Nav() {
-  const [active, setActive] = useState<string | null>(null);
+  // Scrollspy active section — paused for now (hard to perfect with Lenis +
+  // scroll-margin). Hover styles still work; re-enable by restoring the
+  // useEffect below and switching `active` back to useState.
+  const active: string | null = null;
 
-  useEffect(() => {
-    const sections = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-section]"),
-    );
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Pick the most-visible intersecting section, tie broken by top-most.
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
-      },
-      {
-        // An element counts as active when ~25% of it crosses the top third.
-        rootMargin: "-30% 0px -55% 0px",
-        threshold: [0, 0.25, 0.5, 1],
-      },
-    );
-    sections.forEach((s) => observer.observe(s));
-
-    // Bottom-of-page fallback: the last section (+ footer) is often too short to
-    // reach the detection band, so it would never activate. When the viewport is
-    // within 2px of the document bottom, force the last section active.
-    const lastId = sections[sections.length - 1]?.id ?? null;
-    const onScroll = () => {
-      const atBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 2;
-      if (atBottom && lastId) setActive(lastId);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
+  // const [active, setActive] = useState<string | null>(null);
+  //
+  // useEffect(() => {
+  //   /**
+  //    * Scrollspy — classic "last section past the activation line" algorithm.
+  //    *
+  //    * The activation line MUST match the sections' scroll-margin-top
+  //    * (Tailwind `scroll-mt-20` ≈ 80px). Hash/nav clicks land the section top
+  //    * at that margin; if the spy line sits higher (e.g. under the 56px nav
+  //    * only), the *previous* section stays active after every click.
+  //    *
+  //    * IntersectionObserver tripwires are easy to mis-align with scroll-margin
+  //    * and brittle with large negative rootMargins — scroll position is clearer.
+  //    */
+  //   const ids = SECTIONS.map((s) => s.id);
+  //   const sections = ids
+  //     .map((id) => document.getElementById(id))
+  //     .filter((el): el is HTMLElement => el !== null);
+  //   if (sections.length === 0) return;
+  //
+  //   const lastId = ids[ids.length - 1] ?? null;
+  //   let ticking = false;
+  //
+  //   /** Y from viewport top where a section becomes active. */
+  //   const activationLine = () => {
+  //     const sample = sections[0];
+  //     const margin = sample
+  //       ? parseFloat(getComputedStyle(sample).scrollMarginTop)
+  //       : NaN;
+  //     // scroll-mt-20 → 80px; fall back if computed style is unavailable.
+  //     // +2px slack for sub-pixel layout after hash scroll / Lenis.
+  //     const line = Number.isFinite(margin) && margin > 0 ? margin : 80;
+  //     return line + 2;
+  //   };
+  //
+  //   const update = () => {
+  //     ticking = false;
+  //     const line = activationLine();
+  //     const viewH = window.innerHeight;
+  //     const scrollY = window.scrollY;
+  //     const docH = document.documentElement.scrollHeight;
+  //
+  //     // Last section is often too short for its top to cross the line (footer
+  //     // sits outside #contact). Only force at the true scroll end.
+  //     if (lastId && scrollY + viewH >= docH - 2) {
+  //       setActive(lastId);
+  //       return;
+  //     }
+  //
+  //     // Last section whose top has crossed the activation line.
+  //     let current: string | null = null;
+  //     for (const el of sections) {
+  //       if (el.getBoundingClientRect().top <= line) {
+  //         current = el.id;
+  //       }
+  //     }
+  //     setActive(current);
+  //   };
+  //
+  //   const onScrollOrResize = () => {
+  //     if (!ticking) {
+  //       ticking = true;
+  //       requestAnimationFrame(update);
+  //     }
+  //   };
+  //
+  //   update();
+  //   window.addEventListener("scroll", onScrollOrResize, { passive: true });
+  //   window.addEventListener("resize", onScrollOrResize);
+  //   window.addEventListener("hashchange", update);
+  //
+  //   return () => {
+  //     window.removeEventListener("scroll", onScrollOrResize);
+  //     window.removeEventListener("resize", onScrollOrResize);
+  //     window.removeEventListener("hashchange", update);
+  //   };
+  // }, []);
 
   return (
     <header
       data-site-nav
       className={cn(
         "fixed inset-x-0 top-0 z-40",
-        "border-b border-zinc-900/60 bg-zinc-950/70 backdrop-blur",
-        "supports-[backdrop-filter]:bg-zinc-950/50",
+        "border-b border-line bg-paper/90 backdrop-blur-sm",
       )}
     >
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6 sm:px-10 xl:px-0 2xl:max-w-[90rem]">
+      <div
+        className="mx-auto flex h-14 max-w-7xl items-center justify-between 2xl:max-w-[90rem]"
+        style={{ paddingInline: "var(--gutter)" }}
+      >
         <Seal />
-        <DesktopNav active={active} />
-        <MobileNav active={active} />
+        <div className="flex items-center gap-4">
+          <DesktopNav active={active} />
+          {/* Mobile: switch sits outside the sheet so theme is one tap away. */}
+          <ThemeToggle className="lg:hidden" />
+          <MobileNav active={active} />
+        </div>
       </div>
     </header>
   );

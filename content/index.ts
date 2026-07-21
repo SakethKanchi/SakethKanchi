@@ -15,8 +15,6 @@ export interface Profile {
   linkedin: Url;
   email: string;
   location: string;
-  // Build timestamp (UTC) so footer can render "built at …" without a live client fetch.
-  footerTimestamp: string;
 }
 
 export interface StackChip {
@@ -112,8 +110,6 @@ export const profile: Profile = {
   linkedin: "https://linkedin.com/in/saketh-kanchi/",
   email: "sakethkanchi3@gmail.com",
   location: "Jersey City, NJ",
-  // Computed once at module load (build time on Vercel). Static string in the bundle.
-  footerTimestamp: `Built ${new Date().toISOString().slice(0, 10)}`,
 };
 
 // ---------------------------------------------------------------------------

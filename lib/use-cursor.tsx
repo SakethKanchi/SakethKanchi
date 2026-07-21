@@ -7,7 +7,7 @@ import { useReducedMotion } from "framer-motion";
 const ENABLE_CUSTOM_CURSOR = true;
 
 // CustomCursor — an additive, desktop-only dot that follows the mouse via
-// requestAnimationFrame with `mix-blend-difference` and a sky-400 border.
+// requestAnimationFrame with `mix-blend-difference` and an ink border.
 // The native cursor stays visible (this is a flourish, not a replacement).
 //
 // Renders ONLY when all of these hold:
@@ -79,7 +79,7 @@ export function CustomCursor() {
     <div
       ref={dotRef}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[200] h-4 w-4 rounded-full border border-[var(--accent)] opacity-0 mix-blend-difference"
+      className="pointer-events-none fixed left-0 top-0 z-[200] h-3.5 w-3.5 rounded-[2px] border border-[var(--ember)] opacity-0 mix-blend-difference"
       style={{ transform: "translate3d(-100px, -100px, 0)" }}
     />
   );

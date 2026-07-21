@@ -2,64 +2,69 @@ import { SectionHeader } from "@/components/section-header";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { about } from "@/content";
 
-// About — paragraph (verbatim from resume \roleSummary fullstack variant),
-// CurrentlyList (3 mono lines), 5 SkillGroups, 1 Cert. One short scroll.
 export function AboutSection() {
   return (
-    <SectionWrapper id="about" aria-label="About" className="px-6 sm:px-10">
+    <SectionWrapper id="about" aria-label="About">
       <div className="mx-auto max-w-7xl 2xl:max-w-[90rem]">
         <SectionHeader render="05" label="About" reveal="word" />
 
-        <div className="mt-10 grid grid-cols-1 gap-12 md:grid-cols-[1fr_1fr]">
-          {/* Left: paragraph + currently */}
+        <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          {/* Left: bio + currently + certs as dossier */}
           <div className="flex flex-col gap-8">
-            <p className="max-w-prose font-sans text-[1.05rem] leading-relaxed text-zinc-300">
+            <p className="max-w-prose text-[1.05rem] leading-relaxed text-ink-dim">
               {about.paragraph}
             </p>
 
-            <div className="flex flex-col gap-2">
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-                Currently
-              </p>
-              <ul className="flex flex-col gap-1.5">
-                {about.currently.map((line) => (
-                  <li
-                    key={line}
-                    className="font-mono text-sm text-zinc-300"
-                  >
-                    {line}
-                  </li>
-                ))}
-              </ul>
+            <div className="border border-line">
+              <div className="border-b border-line px-4 py-2.5">
+                <span className="mono-label text-ember">Currently</span>
+              </div>
+              {about.currently.map((line, i) => (
+                <div
+                  key={line}
+                  className={
+                    i < about.currently.length - 1
+                      ? "border-b border-line px-4 py-3 mono-body text-ink-dim"
+                      : "px-4 py-3 mono-body text-ink-dim"
+                  }
+                >
+                  {line}
+                </div>
+              ))}
             </div>
 
-            <div className="flex flex-col gap-2">
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-                Certifications
-              </p>
-              <ul className="flex flex-col gap-1.5">
-                {about.certifications.map((c) => (
-                  <li
-                    key={c.name}
-                    className="font-mono text-sm text-zinc-300"
-                  >
-                    {c.name} — {c.issuer}, {c.year}
-                  </li>
-                ))}
-              </ul>
+            <div className="border border-line">
+              <div className="border-b border-line px-4 py-2.5">
+                <span className="mono-label text-ember">Certifications</span>
+              </div>
+              {about.certifications.map((c) => (
+                <div key={c.name} className="px-4 py-3">
+                  <p className="dossier-val text-ink">{c.name}</p>
+                  <p className="mono-body text-ink-faint">
+                    {c.issuer} · {c.year}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Right: skill groups */}
-          <div className="flex flex-col gap-6">
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-              Skills
-            </p>
-            {about.skills.map((group) => (
-              <div key={group.label} className="flex flex-col gap-2">
-                <p className="font-mono text-sm text-zinc-200">{group.label}</p>
-                <p className="font-mono text-sm text-zinc-400">
-                  {group.items.join(", ")}
+          {/* Right: skills as dossier groups */}
+          <div className="border border-line">
+            <div className="border-b border-line px-4 py-2.5">
+              <span className="mono-label text-ember">Skills</span>
+            </div>
+            {about.skills.map((group, i) => (
+              <div
+                key={group.label}
+                className={
+                  i < about.skills.length - 1
+                    ? "border-b border-line px-4 py-4"
+                    : "px-4 py-4"
+                }
+              >
+                <p className="dossier-key mb-1.5">{group.label}</p>
+                <p className="mono-body text-ink-dim">
+                  {group.items.join(" · ")}
                 </p>
               </div>
             ))}

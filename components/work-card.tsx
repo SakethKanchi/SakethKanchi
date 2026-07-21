@@ -5,10 +5,6 @@ import { AnimatedMetric } from "@/components/animated-metric";
 import { MagneticButton } from "@/components/magnetic-button";
 import type { Project } from "@/content";
 
-// Derive an animated-counter spec from the existing metric string, but ONLY for
-// the Kitty card. This is the single count-up moment on the site; deriving it
-// from the metric string keeps the content model unchanged (no new field).
-// e.g. "10,000+ downloads" → { to: 10000, suffix: "+", label: "downloads" }.
 function kittyCounter(
   title: string,
   metric?: string,
@@ -21,9 +17,7 @@ function kittyCounter(
   return { to, suffix: m[2] || "", label: m[3] || "" };
 }
 
-// Work card — numeric NN / 05 left (Geist Mono sky-400), middle
-// title+discipline+one-line+stack chips+optional metric, right CTA link.
-// Flagship (RagBench) shows a small `Flagship` sky-400 chip + statusCallout.
+// Work card — dossier row: index / title / discipline / stack / CTA.
 export function WorkCard({ project }: { project: Project }) {
   const {
     index,
@@ -46,51 +40,43 @@ export function WorkCard({ project }: { project: Project }) {
   return (
     <article
       className={cn(
-        "border-t border-zinc-900 py-10",
-        "grid grid-cols-1 gap-6 md:grid-cols-[5rem_1fr_auto] md:gap-8",
+        "border-t border-line py-8",
+        "grid grid-cols-1 gap-5 md:grid-cols-[4.5rem_1fr_auto] md:gap-8",
       )}
     >
-      {/* Left: numeric index */}
-      <div className="font-mono text-xs tabular-nums text-[var(--accent)]">
-        <span className="block">{index}</span>
-        <span className="text-zinc-600">{total}</span>
+      <div className="mono-label tabular-nums text-ink-faint">
+        <span className="block text-ember">{index}</span>
+        <span className="text-ink-faint">/ {total}</span>
       </div>
 
-      {/* Middle: content */}
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h3 className="font-sans text-2xl font-semibold tracking-tight text-zinc-100 sm:text-3xl">
+          <h3 className="font-sans text-xl font-medium tracking-tight text-ink sm:text-2xl">
             {title}
           </h3>
           {isFlagship && (
-            <span className="rounded-full border border-[var(--accent)] px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-[var(--accent)]">
+            <span className="rounded-[2px] border border-ember bg-ember-faint px-2 py-0.5 mono-micro text-ember">
               Flagship
             </span>
           )}
-          <span className="font-mono text-xs uppercase tracking-[0.15em] text-zinc-500">
-            {discipline}
-          </span>
+          <span className="label-upper text-ink-faint">{discipline}</span>
         </div>
 
-        <p className="max-w-prose text-sm leading-relaxed text-zinc-400 sm:text-[0.95rem]">
+        <p className="max-w-prose text-[0.95rem] leading-relaxed text-ink-dim sm:text-base">
           {oneLine}
         </p>
 
-        {/* Stack chips */}
-        <ul className="flex flex-wrap gap-2">
+        <ul className="flex flex-wrap gap-1.5">
           {stack.map((chip) => (
             <li
               key={chip}
-              className="rounded-md border border-zinc-800 bg-zinc-900/40 px-2 py-1 font-mono text-[0.7rem] text-zinc-400"
+              className="rounded-[2px] border border-line bg-paper-raised px-2 py-1 mono-body text-ink-muted"
             >
               {chip}
             </li>
           ))}
         </ul>
 
-        {/* Metric or honest status callout.
-            The Kitty metric is the ONE animated number on the site (0 → value
-            on scroll-in). Every other metric renders as static text. */}
         {metric &&
           (counter ? (
             <AnimatedMetric
@@ -99,15 +85,14 @@ export function WorkCard({ project }: { project: Project }) {
               label={counter.label}
             />
           ) : (
-            <p className="font-mono text-sm text-[var(--accent)]">{metric}</p>
+            <p className="mono-body text-ember">{metric}</p>
           ))}
         {statusCallout && (
-          <p className="border-l-2 border-[var(--accent)] pl-3 font-mono text-sm text-zinc-400">
+          <p className="border-l-2 border-ember-solid pl-3 mono-body text-ink-muted">
             {statusCallout}
           </p>
         )}
 
-        {/* Secondary link (Parley landing) */}
         {secondaryHref && secondaryHrefLabel && (
           <p className="mt-1">
             <MonoLink href={secondaryHref}>{secondaryHrefLabel}</MonoLink>
@@ -115,34 +100,28 @@ export function WorkCard({ project }: { project: Project }) {
         )}
       </div>
 
-      {/* Right: primary CTA */}
       <div className="md:pt-1">
         {href && hrefLabel && (
           <MagneticButton>
             <Link
               href={href}
-              rel={
-                /^https?:/.test(href) ? "noreferrer noopener" : undefined
-              }
+              rel={/^https?:/.test(href) ? "noreferrer noopener" : undefined}
               target={/^https?:/.test(href) ? "_blank" : undefined}
               className={cn(
-                "font-mono text-sm text-zinc-300 hover:text-zinc-100",
-                "underline-offset-[0.2em] decoration-zinc-500/60",
+                "btn-label text-ink-dim hover:text-ember",
+                "underline-offset-[0.2em]",
                 "bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-[position:0_100%] bg-no-repeat",
-                "transition-[background-size] duration-300 ease-out",
+                "transition-[background-size,color] duration-300 ease-out",
                 "hover:bg-[length:100%_1px]",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]",
+                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
               )}
             >
               {hrefLabel}
             </Link>
           </MagneticButton>
         )}
-        {/* Card 05 — no link: render a muted placeholder so grid stays aligned */}
         {!href && (
-          <span className="font-mono text-xs uppercase tracking-[0.15em] text-zinc-600">
-            (private study)
-          </span>
+          <span className="mono-label text-ink-faint">(private study)</span>
         )}
       </div>
     </article>

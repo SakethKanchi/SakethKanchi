@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // Tree-shake icon / motion entry points instead of whole packages.
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react", "@base-ui/react"],
+  },
 };
 
 export default nextConfig;

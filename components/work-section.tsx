@@ -5,14 +5,10 @@ import { selectedWork } from "@/content";
 
 export function WorkSection() {
   return (
-    <SectionWrapper
-      id="work"
-      aria-label="Selected work"
-      className="px-6 sm:px-10"
-    >
+    <SectionWrapper id="work" aria-label="Selected work">
       <div className="mx-auto max-w-7xl 2xl:max-w-[90rem]">
         <SectionHeader render="01" label="Selected work" reveal="word" />
-        <div className="mt-10">
+        <div className="mt-8 border-b border-line">
           {selectedWork.map((p) => (
             <WorkCard key={p.index} project={p} />
           ))}

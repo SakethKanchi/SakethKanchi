@@ -4,9 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { profile } from "@/content";
+import { Barcode } from "@/components/barcode";
+import { KanjiMark } from "@/components/kanji-mark";
 
 export const SPLASH_SESSION_KEY = "splash_seen";
-const DURATION_MS = 3000;
+const DURATION_MS = 2800;
 
 function clearSplashLock() {
   if (typeof document === "undefined") return;
@@ -18,24 +20,9 @@ function setSplashLock() {
   document.documentElement.setAttribute("data-splash", "1");
 }
 
-// Type-only loader (editorial-layer v2 — replaces the v1 "click anywhere"
-// splash). Full-viewport overlay:
-//   - name in Fraunces, revealed via line-mask (translateY 100% → 0) on mount
-//   - role eyebrow in Geist Mono uppercase
-//   - 0 → 100 progress counter bottom-right (tabular-nums), over 3s
-// Dismiss rules:
-//   - auto at counter 100 (~3s)
-//   - immediately on any click / keypress (cancels the counter)
-//   - repeat visit (sessionStorage["splash_seen"] === "1") → skip, onDone now
-//   - prefers-reduced-motion → skip on every visit, onDone now
-//
-// Portaled to document.body so z-index is not trapped under layout <main
-// className="relative z-10"> (which left the fixed nav z-40 on top of the
-// splash). html[data-splash] also hides the nav via CSS for first paint.
 export function Splash({ onDone }: { onDone: () => void }) {
   const reduce = useReducedMotion();
   const [visible, setVisible] = useState(true);
-  // Defer portal until after mount so SSR markup matches the first client paint.
   const [portaled, setPortaled] = useState(false);
   const [count, setCount] = useState(0);
   const rafRef = useRef<number | null>(null);
@@ -54,7 +41,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
       try {
         sessionStorage.setItem(SPLASH_SESSION_KEY, "1");
       } catch {
-        // Private mode / disabled storage — swallow; loader still ends.
+        // Private mode — swallow
       }
     }
     onDone();
@@ -65,7 +52,6 @@ export function Splash({ onDone }: { onDone: () => void }) {
   }, []);
 
   useEffect(() => {
-    // Reduced-motion → no loader on any visit.
     if (reduce) {
       clearSplashLock();
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -74,7 +60,6 @@ export function Splash({ onDone }: { onDone: () => void }) {
       doneRef.current = true;
       return;
     }
-    // Repeat visit within the session → skip.
     if (
       typeof window !== "undefined" &&
       sessionStorage.getItem(SPLASH_SESSION_KEY)
@@ -88,7 +73,6 @@ export function Splash({ onDone }: { onDone: () => void }) {
 
     setSplashLock();
 
-    // First visit: run a 0 → 100 counter over DURATION_MS, then auto-dismiss.
     const start = performance.now();
     const tick = (now: number) => {
       const progress = Math.min((now - start) / DURATION_MS, 1);
@@ -101,7 +85,6 @@ export function Splash({ onDone }: { onDone: () => void }) {
     };
     rafRef.current = requestAnimationFrame(tick);
 
-    // Any key anywhere dismisses immediately (spec: "presses any key").
     const onKey = () => dismiss();
     window.addEventListener("keydown", onKey);
 
@@ -123,37 +106,43 @@ export function Splash({ onDone }: { onDone: () => void }) {
         e.preventDefault();
         dismiss();
       }}
-      className="fixed inset-0 z-[300] flex cursor-pointer flex-col items-center justify-center bg-zinc-950 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ring)]"
+      className="fixed inset-0 z-[300] flex cursor-pointer flex-col items-center justify-center bg-paper focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ember)]"
     >
-      <div className="flex flex-col items-center gap-4 px-6 text-center">
+      <div className="flex flex-col items-center gap-5 px-6 text-center">
+        <KanjiMark className="h-12 w-12 text-ember" />
         <span className="line-mask">
           <motion.span
-            className="block font-display text-[clamp(2.8rem,7vw,6.5rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-zinc-100"
+            className="block font-display text-[clamp(2.4rem,7vw,4.5rem)] font-bold leading-[0.95] tracking-tight text-ink"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             {profile.name}
           </motion.span>
         </span>
-        <span className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500 sm:text-sm">
+        <span className="mono-label text-ink-faint">
           {profile.role} · {profile.location}
         </span>
+        <Barcode bars={22} className="mt-2 h-5" />
       </div>
 
       <span
         aria-hidden
-        className="absolute bottom-6 right-6 font-mono text-sm tabular-nums text-zinc-500 sm:bottom-10 sm:right-10"
+        className="absolute bottom-6 right-6 mono-body tabular-nums text-ember sm:bottom-10 sm:right-10"
         style={{ fontVariantNumeric: "tabular-nums" }}
       >
-        {count}
+        {String(count).padStart(3, "0")}
+      </span>
+
+      <span
+        aria-hidden
+        className="absolute bottom-6 left-6 mono-micro text-ink-faint sm:bottom-10 sm:left-10"
+      >
+        Click or press any key
       </span>
     </div>
   );
 
-  // Portal to body so z-[300] sits above nav (z-40) and the custom cursor
-  // (z-200). Until mount, render inline — nav is already hidden via
-  // html[data-splash] CSS from the layout bootstrap script.
   if (portaled) {
     return createPortal(overlay, document.body);
   }

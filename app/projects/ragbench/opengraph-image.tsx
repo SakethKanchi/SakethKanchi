@@ -5,7 +5,6 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "RagBench — RAG Quality Lab · Saketh Kanchi";
 
-// RagBench OG variant — project title instead of the person name.
 export default function Og() {
   return new ImageResponse(
     (
@@ -17,20 +16,39 @@ export default function Og() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "5rem",
-          backgroundColor: "#09090b",
-          color: "#f4f4f5",
-          fontFamily: "system-ui, sans-serif",
+          backgroundColor: "#000000",
+          color: "#cdc4ba",
+          fontFamily: "Georgia, ui-serif, serif",
         }}
       >
-        <div style={{ fontSize: "4.75rem", fontWeight: 600, letterSpacing: "-0.02em" }}>
+        <div
+          style={{
+            fontSize: "0.95rem",
+            fontFamily: "ui-monospace, monospace",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "#d4a06a",
+            marginBottom: "1.25rem",
+          }}
+        >
+          01 // Project dossier
+        </div>
+        <div
+          style={{
+            fontSize: "4.75rem",
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            lineHeight: 1,
+          }}
+        >
           RagBench
         </div>
         <div
           style={{
             marginTop: "1.25rem",
-            fontSize: "2rem",
+            fontSize: "1.75rem",
             fontFamily: "ui-monospace, monospace",
-            color: "#38bdf8",
+            color: "#d4a06a",
           }}
         >
           RAG Quality Lab
@@ -39,8 +57,8 @@ export default function Og() {
           style={{
             marginTop: "0.75rem",
             fontFamily: "ui-monospace, monospace",
-            fontSize: "1.25rem",
-            color: "#a1a1aa",
+            fontSize: "1.1rem",
+            color: "#958f87",
           }}
         >
           Saketh Kanchi
@@ -51,8 +69,10 @@ export default function Og() {
             bottom: "3rem",
             right: "5rem",
             fontFamily: "ui-monospace, monospace",
-            fontSize: "1rem",
-            color: "#71717a",
+            fontSize: "0.95rem",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "#7a756e",
           }}
         >
           sakethkanchi.com

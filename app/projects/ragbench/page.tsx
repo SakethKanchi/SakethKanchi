@@ -13,11 +13,9 @@ export const metadata: Metadata = {
 
 function StackChip({ label, note }: { label: string; note?: string }) {
   return (
-    <li className="flex flex-col gap-1 rounded-md border border-zinc-800 bg-zinc-900/40 px-3 py-2">
-      <span className="font-mono text-sm text-zinc-100">{label}</span>
-      {note && (
-        <span className="font-mono text-xs text-zinc-500">{note}</span>
-      )}
+    <li className="flex flex-col gap-1 rounded-[2px] border border-line bg-paper-raised px-3 py-2">
+      <span className="mono-body text-ink">{label}</span>
+      {note && <span className="mono-body text-ink-faint">{note}</span>}
     </li>
   );
 }
@@ -26,130 +24,116 @@ export default function RagBenchPage() {
   const d = ragbenchDetail;
 
   return (
-    <main className="mx-auto max-w-3xl px-6 pb-24 pt-24 sm:px-10">
+    <div
+      className="mx-auto max-w-3xl pb-24 pt-24"
+      style={{ paddingInline: "var(--gutter)" }}
+    >
       <Link
         href="/"
-        className="font-mono text-sm text-zinc-400 hover:text-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]"
+        className="mono-body text-ink-muted hover:text-ember focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]"
       >
         ← Back to home
       </Link>
 
-      {/* Header */}
       <header className="mt-10 flex flex-col gap-3">
-        <h1 className="font-sans text-4xl font-semibold tracking-tight text-zinc-100 sm:text-5xl">
+        <p className="mono-label text-ember">01 // Project dossier</p>
+        <h1 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
           {d.title}
         </h1>
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
-          {d.disciplineTag}
-        </p>
-        <ul className="flex flex-wrap gap-2">
+        <p className="label-upper text-ink-faint">{d.disciplineTag}</p>
+        <ul className="mt-2 flex flex-wrap gap-2">
           {d.stack.map((c) => (
             <StackChip key={c.label} label={c.label} note={c.note} />
           ))}
         </ul>
       </header>
 
-      {/* What it is */}
-      <section aria-label="What it is" className="mt-16">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-          [ 01 — What it is ]
-        </h2>
-        <p className="mt-4 max-w-prose font-sans text-[1.05rem] leading-relaxed text-zinc-300">
+      <section aria-label="What it is" className="mt-14">
+        <h2 className="mono-label text-ember">01 // What it is</h2>
+        <p className="mt-4 max-w-prose text-[1.05rem] leading-relaxed text-ink-dim">
           {d.whatItIs}
         </p>
       </section>
 
-      {/* Why it exists */}
-      <section aria-label="Why it exists" className="mt-16">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-          [ 02 — Why it exists ]
-        </h2>
-        <p className="mt-4 max-w-prose font-sans text-[1.05rem] leading-relaxed text-zinc-300">
+      <section aria-label="Why it exists" className="mt-14">
+        <h2 className="mono-label text-ember">02 // Why it exists</h2>
+        <p className="mt-4 max-w-prose text-[1.05rem] leading-relaxed text-ink-dim">
           {d.whyItExists}
         </p>
       </section>
 
-      {/* Surfaces */}
-      <section aria-label="Surfaces" className="mt-16">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-          [ 03 — Surfaces ]
-        </h2>
-        <table className="mt-4 w-full border-collapse text-left">
-          <thead>
-            <tr className="border-b border-zinc-800">
-              <th className="py-2 pr-4 font-mono text-xs uppercase tracking-[0.15em] text-zinc-500">
-                Surface
-              </th>
-              <th className="py-2 font-mono text-xs uppercase tracking-[0.15em] text-zinc-500">
-                Role
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {d.surfaces.map((s) => (
-              <tr key={s.name} className="border-b border-zinc-900">
-                <td className="py-3 pr-4 align-top font-mono text-sm text-zinc-100">
-                  <p className="text-zinc-100">{s.name}</p>
-                  <p className="font-mono text-xs text-zinc-500">{s.route}</p>
-                </td>
-                <td className="py-3 font-sans text-sm text-zinc-400">
-                  {s.role}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <section aria-label="Surfaces" className="mt-14">
+        <h2 className="mono-label text-ember">03 // Surfaces</h2>
+        <div className="mt-4 border border-line">
+          <div className="grid grid-cols-[1fr_1.4fr] border-b border-line">
+            <div className="border-r border-line px-4 py-2.5 dossier-key">
+              Surface
+            </div>
+            <div className="px-4 py-2.5 dossier-key">Role</div>
+          </div>
+          {d.surfaces.map((s, i) => (
+            <div
+              key={s.name}
+              className={
+                i < d.surfaces.length - 1
+                  ? "grid grid-cols-[1fr_1.4fr] border-b border-line"
+                  : "grid grid-cols-[1fr_1.4fr]"
+              }
+            >
+              <div className="border-r border-line px-4 py-3">
+                <p className="mono-body text-ink">{s.name}</p>
+                <p className="mono-body text-ink-faint">{s.route}</p>
+              </div>
+              <div className="px-4 py-3 text-sm text-ink-dim">{s.role}</div>
+            </div>
+          ))}
+        </div>
       </section>
 
-      {/* Stack with notes */}
-      <section aria-label="Stack" className="mt-16">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-          [ 04 — Stack ]
-        </h2>
-        <ul className="mt-4 flex flex-col gap-3">
-          {d.stack.map((c) => (
+      <section aria-label="Stack" className="mt-14">
+        <h2 className="mono-label text-ember">04 // Stack</h2>
+        <ul className="mt-4 flex flex-col border border-line">
+          {d.stack.map((c, i) => (
             <li
               key={c.label}
-              className="flex flex-col gap-0.5 border-l-2 border-zinc-800 pl-3"
+              className={
+                i < d.stack.length - 1
+                  ? "border-b border-line px-4 py-3"
+                  : "px-4 py-3"
+              }
             >
-              <span className="font-mono text-sm text-zinc-100">{c.label}</span>
+              <span className="mono-body text-ink">{c.label}</span>
               {c.note && (
-                <span className="font-mono text-xs text-zinc-500">{c.note}</span>
+                <span className="mt-0.5 block mono-body text-ink-faint">
+                  {c.note}
+                </span>
               )}
             </li>
           ))}
         </ul>
       </section>
 
-      {/* Honest status callout */}
-      <section aria-label="Honest status" className="mt-16">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-          [ 05 — Honest status ]
-        </h2>
-        <div className="mt-4 border-l-2 border-[var(--accent)] bg-zinc-900/60 p-6">
-          <p className="font-mono text-sm uppercase tracking-[0.15em] text-[var(--accent)]">
-            Honest status
-          </p>
-          <p className="mt-3 max-w-prose text-sm leading-relaxed text-zinc-300">
+      <section aria-label="Honest status" className="mt-14">
+        <h2 className="mono-label text-ember">05 // Honest status</h2>
+        <div className="mt-4 border border-ember bg-ember-faint p-5">
+          <p className="mono-label text-ember">Honest status</p>
+          <p className="mt-3 max-w-prose text-sm leading-relaxed text-ink-dim">
             {d.statusCallout}
           </p>
         </div>
       </section>
 
-      {/* Placeholder figure */}
-      <section aria-label="Screenshots" className="mt-16">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
-          [ 06 — Screenshots ]
-        </h2>
+      <section aria-label="Screenshots" className="mt-14">
+        <h2 className="mono-label text-ember">06 // Screenshots</h2>
         <figure
-          className="mt-4 flex min-h-[12rem] items-center justify-center border border-dashed border-zinc-800 bg-zinc-900/30"
+          className="mt-4 flex min-h-[12rem] items-center justify-center border border-dashed border-line bg-paper-raised"
           aria-label="Screenshot placeholder"
         >
-          <figcaption className="font-mono text-sm text-zinc-500">
+          <figcaption className="mono-body text-ink-faint">
             Screenshot pending judged evals
           </figcaption>
         </figure>
       </section>
-    </main>
+    </div>
   );
 }
