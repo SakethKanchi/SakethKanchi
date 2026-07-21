@@ -16,14 +16,7 @@
   "keywords": [],
   "author": "Saketh Kanchi <sakethkanchi3@gmail.com>",
   "license": "MIT",
-  "packageManager": "pnpm@11.15.0",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.3.0",
-      "onFail": "download"
-    }
-  },
+  "packageManager": "pnpm@10.34.5",
   "type": "module",
   "dependencies": {
     "@base-ui/react": "^1.6.0",

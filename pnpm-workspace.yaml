@@ -1,4 +1,5 @@
-allowBuilds:
-  esbuild: true
-  sharp: true
-  unrs-resolver: true
+# Not a monorepo — this file only holds pnpm 10+ project settings.
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver
