@@ -16,6 +16,7 @@
   "keywords": [],
   "author": "Saketh Kanchi <sakethkanchi3@gmail.com>",
   "license": "MIT",
+  "packageManager": "pnpm@11.15.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
