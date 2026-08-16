@@ -79,15 +79,16 @@ async function main() {
       .count();
     check("normal: 4 hero line-masks", maskCount === 4, `count=${maskCount}`);
 
-    // Section header label uses Fraunces
+    // Section header label uses Space Grotesk (the display serif is reserved
+    // for the name/loader and metric numerals; section titles are font-sans).
     const shFont = await page
-      .locator("h2 .font-display")
+      .locator("h2 span.font-sans")
       .first()
       .evaluate((el) => getComputedStyle(el).fontFamily)
       .catch(() => "");
     check(
-      "normal: section header label uses Fraunces",
-      /fraunces/i.test(shFont),
+      "normal: section header label uses Space Grotesk",
+      /space\s*grotesk/i.test(shFont),
       shFont,
     );
 

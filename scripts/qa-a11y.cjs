@@ -126,7 +126,7 @@ async function main() {
     return {
       bg: getComputedStyle(document.body).backgroundColor,
       name: col(document.querySelector("h1")),
-      role: col(document.querySelector('section#top p[class*="accent"]')),
+      role: col(document.querySelector('section#top p.text-ember')),
     };
   });
   await fctx.close();
@@ -167,7 +167,7 @@ async function main() {
       bg: getComputedStyle(document.body).backgroundColor,
       name: col(document.querySelector("h1")),
       body: col(document.querySelector("#about p")),
-      muted: col(document.querySelector('[class*="text-zinc-500"]')),
+      muted: col(document.querySelector('.text-ink-muted')),
     };
   });
 

@@ -119,7 +119,7 @@ export const profile: Profile = {
 export const selectedWork: Project[] = [
   {
     index: "01",
-    total: "05",
+    total: "06",
     title: "RagBench",
     discipline: "RAG Quality Lab",
     oneLine: "A self-hostable RAG retrieval quality bench — ablate dense vs keyword vs hybrid on a fixed golden set, tag failures by cause, probe bad cases side-by-side.",
@@ -132,7 +132,7 @@ export const selectedWork: Project[] = [
   },
   {
     index: "02",
-    total: "05",
+    total: "06",
     title: "drive-rag",
     discipline: "Edge RAG System",
     oneLine:
@@ -143,7 +143,7 @@ export const selectedWork: Project[] = [
   },
   {
     index: "03",
-    total: "05",
+    total: "06",
     title: "Parley",
     discipline: "Audio / Multi-process Bot",
     oneLine:
@@ -156,7 +156,19 @@ export const selectedWork: Project[] = [
   },
   {
     index: "04",
-    total: "05",
+    total: "06",
+    title: "tracker",
+    discipline: "Developer Tool / CLI",
+    oneLine:
+      "One terminal command that shows the remaining quota on every AI subscription you own — Claude, Grok, Codex, Gemini, and OpenAI — instead of logging into five dashboards to find out who still has budget.",
+    stack: ["Python 3.11+", "SQLite", "OAuth 2.0 / OIDC refresh", "httpx + rich", "Discord webhook"],
+    metric: "5 providers, one dashboard",
+    href: "https://github.com/SakethKanchi/tracker",
+    hrefLabel: "GitHub \u2197",
+  },
+  {
+    index: "05",
+    total: "06",
     title: "Kitty — Visual Studio Code Theme",
     discipline: "Developer Tool / Theme",
     oneLine:
@@ -167,8 +179,8 @@ export const selectedWork: Project[] = [
     hrefLabel: "Marketplace ↗",
   },
   {
-    index: "05",
-    total: "05",
+    index: "06",
+    total: "06",
     title: "Multiple Disease Prediction",
     discipline: "ML Comparison / Streamlit",
     oneLine:

@@ -48,6 +48,9 @@ export function Splash({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   useEffect(() => {
+    // Portal target only exists after mount; this is the standard
+    // "mounted" flag and intentionally runs once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPortaled(true);
   }, []);
 

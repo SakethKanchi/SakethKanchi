@@ -103,10 +103,12 @@ async function main() {
 
     const wordMasks = page.locator("[data-section-label-word]");
     const workChrome = page.locator("#work h2 [data-section-label-chrome]");
+    const wordCount = await wordMasks.count();
+    const chromeCount = await workChrome.count();
     check(
       "normal: section labels use word masks without masking chrome",
-      (await wordMasks.count()) > 0 && (await workChrome.count()) === 4,
-      `words=${await wordMasks.count()} chrome=${await workChrome.count()}`,
+      wordCount > 0 && chromeCount === 0,
+      `words=${wordCount} chrome=${chromeCount}`,
     );
 
     const magnetic = page.locator("[data-magnetic]").first();
