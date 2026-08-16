@@ -142,10 +142,38 @@ async function main() {
 
   await page.screenshot({ path: "/tmp/qa-full-dark.png", fullPage: true });
 
-  // --- Grain on ragbench route ---
-  await page.goto(BASE + "/projects/ragbench", { waitUntil: "networkidle" });
+  // --- Grain on a dossier route (RagBench shelved; use tracker) ---
+  await page.goto(BASE + "/projects/tracker", { waitUntil: "networkidle" });
   const grainRag = await page.locator("body > div.mix-blend-overlay").count();
-  check("grain renders on /projects/ragbench", grainRag === 1, `count=${grainRag}`);
+  check("grain renders on /projects/tracker", grainRag === 1, `count=${grainRag}`);
+
+  // --- Every project dossier renders as a real document ---
+  // Guards the /projects/[slug] route: each page must have exactly one h1, a
+  // back link, numbered sections, and an honest-status callout. Without this a
+  // broken or empty dossier would ship silently.
+  const SLUGS = [
+    "drive-rag",
+    "parley",
+    "tracker",
+    "kitty-vscode-theme",
+    "multiple-disease-prediction",
+  ];
+  for (const slug of SLUGS) {
+    const res = await page.goto(BASE + "/projects/" + slug, {
+      waitUntil: "networkidle",
+    });
+    const status = res ? res.status() : 0;
+    const h1s = await page.locator("h1").count();
+    const sections = await page.locator("section[aria-label]").count();
+    const back = await page.locator('a[href$="/"]', { hasText: "Back to home" }).count();
+    const status_ = await page.getByText("Honest status").count();
+    const words = (await page.locator("main, body").first().innerText()).split(/\s+/).length;
+    check(
+      `dossier /projects/${slug} is a complete document`,
+      status === 200 && h1s === 1 && sections >= 4 && back >= 1 && status_ >= 1 && words > 120,
+      `status=${status} h1=${h1s} sections=${sections} back=${back} statusCallout=${status_} words=${words}`,
+    );
+  }
 
   await ctx.close();
 

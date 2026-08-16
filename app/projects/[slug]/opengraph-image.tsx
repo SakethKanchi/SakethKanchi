@@ -1,11 +1,25 @@
 import { ImageResponse } from "next/og";
+import { projectDetails, getProjectDetail } from "@/content";
 
 export const dynamic = "force-static";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "RagBench — RAG Quality Lab · Saketh Kanchi";
 
-export default function Og() {
+// One social card per dossier, prerendered at build time.
+export function generateStaticParams() {
+  return projectDetails.map((p) => ({ slug: p.slug }));
+}
+
+export default async function Og({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const d = getProjectDetail(slug);
+  const title = d?.title ?? "Project";
+  const discipline = d?.disciplineTag ?? "";
+
   return new ImageResponse(
     (
       <div
@@ -31,17 +45,17 @@ export default function Og() {
             marginBottom: "1.25rem",
           }}
         >
-          01 // Project dossier
+          Project dossier
         </div>
         <div
           style={{
-            fontSize: "4.75rem",
+            fontSize: title.length > 24 ? "3.25rem" : "4.75rem",
             fontWeight: 700,
             letterSpacing: "-0.02em",
             lineHeight: 1,
           }}
         >
-          RagBench
+          {title}
         </div>
         <div
           style={{
@@ -51,7 +65,7 @@ export default function Og() {
             color: "#d4a06a",
           }}
         >
-          RAG Quality Lab
+          {discipline}
         </div>
         <div
           style={{
