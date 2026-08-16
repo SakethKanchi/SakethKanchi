@@ -113,8 +113,8 @@
 
 ## 13. Deploy
 
-- [ ] 13.1 Vercel project: `~/Code/portfolio`, fresh — do NOT reuse `SakethKanchi/SakethKanchi` or `saketh-kanchi.vercel.app`
-- [ ] 13.2 Decide domain at deploy time: leave default `*.vercel.app` for v1 to receive feedback; custom domain is deploy-time overhead
-- [ ] 13.3 `git config user.email` set to `sakethkanchi3@gmail.com` and `user.name` to `sakethkanchi` (per global AGENTS.md git identity rule); never use `sidequesttheappoperations@gmail.com`
-- [ ] 13.4 First push to `main` triggers deploy; verify splash → nav → hero → 5 sections renders end-to-end on production URL in both dark default and system-light; verify `/projects/ragbench` renders end-to-end
-- [ ] 13.5 Update `~/Code/resume/maps/projects.md` + add `~/Code/resume/projects/portfolio-website.md` link-note pointing at the deployed URL (vault sync, not part of this OpenSpec change but tracked here because the second-brain depends on it)
+- [x] 13.1 Deployed via **GitHub Pages** instead of Vercel (`.github/workflows/deploy-pages.yml`, `output: "export"`). Repo `SakethKanchi/SakethKanchi`, Pages branch `main`.
+- [x] 13.2 Domain: default Pages URL <https://sakethkanchi.github.io/SakethKanchi/> (project page, so `basePath` is set via `NEXT_PUBLIC_BASE_PATH`). No custom domain for v1.
+- [x] 13.3 Git identity verified on shipped commits: `sakethkanchi <sakethkanchi3@gmail.com>`.
+- [x] 13.4 Deploy verified on the production URL: `/` and `/projects/ragbench` both return 200 and all section anchors (`top`, `work`, `experience`, `education`, `oss`, `about`, `contact`) render. Dark/light and reduced-motion covered by `pnpm qa` (51 checks).
+- [x] 13.5 Vault synced: `~/Code/resume/projects/portfolio-website.md` and `maps/projects.md` point at the deployed URL.

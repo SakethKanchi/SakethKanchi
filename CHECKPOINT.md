@@ -1,162 +1,109 @@
-# Checkpoint — 2026-07-18
+# Checkpoint — 2026-08-16
 
-> Picked-up file for any agent resuming the portfolio build. Read this first.
-> Canonical build brief is [`~/Code/resume/projects/portfolio-website-build-brief.md`](https://github.com/SakethKanchi/resume/blob/main/projects/portfolio-website-build-brief.md) (self-contained duplicate of the entire OpenSpec change). This checkpoint captures **where we are** and **gotchas already discovered**.
+> Pick-up file for any agent resuming portfolio work. Read this first.
+> The site is **shipped and live**. Everything below the "Historical build log"
+> heading is preserved as-is for context on *why* things are the way they are;
+> where it disagrees with this top section, **this top section wins**.
 
 ## TL;DR
 
-Greenfield portfolio at `~/Code/portfolio`. OpenSpec change `build-portfolio-v1` (82 tasks). Stack: Next.js 16 + Tailwind v4 + Geist + shadcn/ui. Spec-driven: implement one task at a time, mark its `[x]` in `openspec/changes/build-portfolio-v1/tasks.md`, then move on.
+Portfolio at `~/Code/portfolio`, **live at <https://sakethkanchi.github.io/SakethKanchi/>**.
 
-**Progress: 10 / 82 tasks complete (sections 1.1–1.7 fully done; 1.8 in-progress).**
+All four OpenSpec changes are complete:
 
-## What's done so far
+| Change | Tasks | State |
+|--------|-------|-------|
+| `build-portfolio-v1` | 82 / 82 | complete (§13 deploy done via GitHub Pages, not Vercel) |
+| `enrich-design-v2` | 57 / 57 | complete (editorial layer) |
+| `cinematic-motion` | 50 / 50 | complete (Lenis, hero scrub, atmosphere, magnetic) |
+| `signature-glyph-identity` | 15 / 15 | complete |
 
-### Section 1: Repo & tool scaffolding
+There is no in-flight change. New work should start a fresh OpenSpec change.
 
-- [x] **1.1** `pnpm init` + `next@latest react react-dom tailwindcss@^4 postcss autoprefixer` installed
-  - Versions: `next 16.2.10`, `react 19.2.7`, `tailwindcss 4.3.3`, `postcss 8.5.19`, `autoprefixer 10.5.4`
-  - `sharp@0.34.5` build script approved via `pnpm approve-builds`
-- [x] **1.2** `next.config.ts` (App Router, strict TS) + `tsconfig.json` (strict, bundler resolution, `@/*` path alias) + `next-env.d.ts`
-- [x] **1.3** Geist Sans + Geist Mono via `geist` package wired into `app/layout.tsx` as CSS vars `--font-geist-sans` / `--font-geist-mono`
-  - Minimal `app/layout.tsx` + `app/page.tsx` placeholders exist so `pnpm build` produces a runnable route
-- [x] **1.4** Tailwind v4 setup via `@theme` in CSS (no `tailwind.config.ts`). Dark is the **default** in `:root`. Light palette gated by `@media (prefers-color-scheme: light)`. One accent: `sky-400` (mapped to `--color-accent`, `--ring`, `--sidebar-ring`). No `.dark` class strategy.
-- [x] **1.5** `lucide-react 1.24.0`, `framer-motion 12.42.2`, `@vercel/analytics 2.0.1` added
-- [x] **1.6** `.gitignore`, `.env.example`, `package.json` scripts (`dev`, `build`, `start`, `lint`) added
-- [x] **1.7** `shadcn init -d` + `shadcn add sheet` + existing `button` from init. `components.json` written. Two primitives in `components/ui/`: `button.tsx`, `sheet.tsx`. `lib/utils.ts` with `cn()` helper.
-- [ ] **1.8** `eslint.config.mjs` — ESLint + plugins installed (`eslint 10.7.0`, `eslint-config-next 16.2.10`, `@typescript-eslint/{eslint-plugin,parser} 8.64.0`) but **flat config file not yet written**. `next lint` will fail until it exists. Also need to approve the `unrs-resolver@1.12.2` build script via `pnpm approve-builds`.
+## How it actually deploys (differs from the original plan)
 
-After 1.8, section 1 closes. Move to section 2 (content module).
+The v1 spec said Vercel. **What shipped is GitHub Pages.**
 
-## Where to pick up
+- Static export: `output: "export"` in `next.config.ts` → `out/`.
+- Workflow: `.github/workflows/deploy-pages.yml`, triggered on push to **`main`**.
+- Repo: `SakethKanchi/SakethKanchi`. It is a **project page**, so the site lives
+  under the `/SakethKanchi/` path and `basePath`/`assetPrefix` are driven by
+  `NEXT_PUBLIC_BASE_PATH`. `https://sakethkanchi.github.io/` (no path) is a 404 —
+  that is expected, not a bug.
 
-1. **Finish 1.8** — write `eslint.config.mjs` for next/core-web-vitals + @typescript-eslint. Run `pnpm approve-builds` first to allow `unrs-resolver`. Verify `pnpm lint` runs.
-2. **Then Section 2** (content module): build `content/index.ts` with typed objects (`profile`, `selectedWork`, `journey`, `oss`, `about`, `ragbenchDetail`). All values come from `~/Code/resume/projects/*.md` and `~/Code/resume/Saketh_Kanchi_Resume.tex` — verbatim where the spec says "verbatim". Task 2.7 is a truthfulness audit; do it after all content is in.
-3. **Then Section 3** (design-system primitives): `SectionHeader`, `Nav` (desktop + mobile), `SectionWrapper`, `MonoLink`. Console/UI discovery happens here.
-4. **Then Section 4** (splash + hero — vertical-slice checkpoint). Self-check at 4.7 with `pnpm build && pnpm start` for LCP < 1.2s target.
-5. Continue in `tasks.md` order. Sections 5–12 build on the slice; 13 is the deploy.
+**Gotcha that has already bitten once:** the local branch is `master` but Pages
+deploys from `main`. Committing to `master` alone changes nothing in production.
+Push with `git push origin master:main` (or work on `main`).
 
-## Gotchas already discovered (read before doing anything)
+**`pnpm start` does not work** with `output: "export"`. To check a real build:
 
-### TS 7 breaks Next 16 build
-
-- `typescript@7.0.2` is the npm latest but crashes Next 16.2's build worker with `The "id" argument must be of type string. Received undefined` and a misleading "TypeScript not installed" log.
-- **Fix already applied:** pinned `typescript@6.0.3` in `devDependencies`. Do NOT let a future `pnpm update` bump TS to 7.x until Next ≥ 16.3 ships a fix.
-
-### `pnpm dev` background process hangs the shell
-
-- Backgrounding `pnpm dev` with `&` inside the bash tool caused the tool to hang past timeouts. Use `pnpm build` (foreground, self-contained, ~1.1s) for verification. For interactive dev, the human user runs it themselves in their own terminal.
-- For runtime checks, `pnpm build && pnpm start` foreground works, but you do need to kill the `next-server` process between runs (`pkill -9 -f next-server`).
-
-### shadcn init wrote light-default + `.dark` class — overwritten
-
-- `shadcn init -d` scaffolded `globals.css` with light-default in `:root` and dark in `.dark {}`, which violates the locked rule "dark default via media query, no theme toggle".
-- `globals.css` was rewritten: dark is `:root`, light palette is in `@media (prefers-color-scheme: light)`. One accent (`sky-400` `oklch(0.746 0.16 224.0)`) is consistent across both.
-- **Watch out:** any future `shadcn add <component>` may attempt to amend `globals.css`. Run `pnpm build` after every shadcn op and diff `globals.css` against this checkpoint if the palette drifts. Tailwind v4's `@theme` block at the top is the source of truth for `--color-bg`, `--color-fg`, `--color-muted`. If shadcn adds neutral palette vars to `:root`, keep our dark `oklch(0.141 ...)` zinc-950 background.
-
-### PostCSS config must be plain JS
-
-- `postcss.config.mjs` cannot use TypeScript type imports (`import type { PostcssConfig } from "postcss-load-config"`). It crashes Turbopack with `Expected ',', got '{'`.
-- Current file uses `/** @type {import("postcss-load-config").PostcssConfig} */` JSDoc annotation only. Leave it.
-
-### Build scripts status
-
-- `pnpm build` passes with no errors and prerenders `/` + `/_not-found` as static.
-- `pnpm dev` works (verified earlier in this session, then backgrounded unsafely). Use the human's own terminal for live dev.
-- `pnpm lint` will fail until 1.8 is done.
-
-### Untracked / uncommitted
-
-- Git status: everything under the repo (`app/`, `components/`, `openspec/`, `inspiration/`, `lib/`, config files, package files) is **untracked**. Nothing has been committed yet.
-- Per global rule, do not commit until the user explicitly asks. When they do, the git identity is `sakethkanchi3@gmail.com` / `sakethkanchi` — never `sidequesttheappoperations@gmail.com` (per `~/Code/resume/CLAUDE.md`).
-
-## File map (current repo state)
-
-```
-~/Code/portfolio/
-├── .claude/                    # Claude OpenSpec tooling
-├── .opencode/                  # opencode tooling
-├── .git/                       # git, no commits yet
-├── .gitignore                  # node-friendly
-├── .env.example                # empty placeholder (no v1 secrets)
-├── README.md                   # project overview
-├── package.json                # pnpm, "type": "module"
-├── pnpm-lock.yaml
-├── pnpm-workspace.yaml         # auto-created by pnpm 11
-├── tsconfig.json               # strict, @/* path alias
-├── next.config.ts              # App Router, reactStrictMode
-├── next-env.d.ts
-├── postcss.config.mjs           # JS, @tailwindcss/postcss plugin
-├── components.json             # shadcn config (base-nova style, neutral base)
-├── app/
-│   ├── layout.tsx              # wires Geist fonts, root metadata
-│   ├── globals.css             # dark default + light via media query, sky-400 accent
-│   └── page.tsx                # placeholder
-├── components/
-│   └── ui/
-│       ├── button.tsx          # shadcn
-│       └── sheet.tsx            # shadcn
-├── lib/
-│   └── utils.ts                 # cn() helper
-├── inspiration/                 # 4 reference notes (copied from resume repo)
-└── openspec/
-    ├── config.yaml              # project context + locked decisions + anti-patterns
-    └── changes/
-        └── build-portfolio-v1/
-            ├── proposal.md
-            ├── design.md
-            ├── tasks.md         # the 82-checkbox build order (10 done so far)
-            └── specs/            # 8 BDD spec files (home-shell, selected-work, ...)
-
-~/Code/resume/projects/portfolio-website-build-brief.md    # ↑ CANONICAL BACKUP BRIEF (read-only for build agent)
-~/Code/resume/projects/portfolio-website.md                # second-brain project note
-~/Code/resume/maps/projects.md                             # vault index linking both ↑
+```bash
+pnpm build
+cd out && python3 -m http.server 3100     # QA scripts expect port 3100
 ```
 
-## Key locked decisions (do not violate)
+## Current stack (as shipped, supersedes the v1 "locked decisions" below)
 
-- Repo: `~/Code/portfolio` (standalone, NOT inside resume vault)
-- Stack: Next.js App Router + Tailwind v4 + Geist Sans/Mono + shadcn (only `sheet` + `button` in v1)
-- One accent: `sky-400` on `zinc-950` bg — no other accent anywhere
-- One font pair: Geist Sans (body) + Geist Mono (numbers, stack, seal, meta)
-- Dark default via `prefers-color-scheme: light` — **no `.dark` class, no theme toggle**
-- Motion: Framer Motion for splash, hero line reveal, section fades only. `prefers-reduced-motion` must disable every animation.
-- Star counts: cached at build into `data/oss.json` via `scripts/sync-oss.ts`. Fall back to hardcoded floors (`800+`, `260+`, `156+`). **Never live fetch at request time.**
-- One deep-dive route only: `/projects/ragbench`. No `/projects/[slug]` in v1.
-- No fabricated metrics, quotes, PRs, or experience. RagBench shows a visible "Honest status" callout that says metrics are pending judged evals.
-- Section headers: `[ NN — Section name ]` (number + em-dash, Geist Mono for brackets/number/dash, Geist Sans for label)
-- Nav: top horizontal, numbered `01. Work` … `05. Contact`, `<SK />` seal top-left. **Left rail is banned.**
-- Splash: `click anywhere to continue →` in Geist Mono. `SessionStorage["splash_seen"]` skip on repeat. 3s auto-advance. Skipped entirely under `prefers-reduced-motion`.
-- Footer microcopy: `© 2026 Saketh Kanchi` (trimmed in this session; the `· Built with Next.js · Deployed on Vercel` and `Jersey City, NJ · Built <ts>` lines were removed)
-- **Open source contributions** section label (renamed from `Open source` mid-session to avoid confusion with work); section numerals renumbered to 4 (OSS), 5 (About), 6 (Contact). Nav registry adds **Education** as `03. Education` (split out from `02. Experience`, which still uses `·LTM` + bullets for the 2 jobs only).
-- Lighthouse target: perf ≥ 95, a11y ≥ 95, LCP < 1.2s on cold cable.
+- Next.js 16.2.10 (App Router) + React 19 + Tailwind v4 + TypeScript (pinned 6.x)
+- Fonts: **Space Grotesk** (sans/body/section labels), **Space Mono** (mono
+  micro-labels), **Fraunces** (display serif — hero name, loader, metric
+  numerals). The original Geist pair is gone.
+- Motion: Framer Motion + Lenis smooth scroll. No GSAP (deliberate).
+- There **is** a theme toggle (`components/theme-toggle.tsx`), which contradicts
+  the v1 "no theme toggle" rule below. The toggle won.
+- Routes: `/` and `/projects/ragbench` only, plus `robots.txt`, `sitemap.xml`,
+  and OG images.
 
-## Content sources (read these before task 2)
+## Verification commands
 
-- `~/Code/resume/Saketh_Kanchi_Resume.tex` — hero copy, role headline, summary, skills, experience, OSS PRs, certs, contact links
-- `~/Code/resume/projects/ragbench.md` — flagship deep-dive content (verbatim)
-- `~/Code/resume/projects/fund-flow-os.md` — Experience stop 01 bullets (verbatim)
-- `~/Code/resume/projects/sidequest.md` — Experience stop 02 bullets (verbatim)
-- `~/Code/resume/projects/drive-rag.md`, `parley.md`, `kitty-vscode-theme.md`, `multiple-disease-prediction.md` — Selected Work cards 02–05
-- `~/Code/portfolio/inspiration/` — 4 reference site notes (Surendar primary, Anirban secondary)
+```bash
+pnpm build          # static export, ~8s
+pnpm lint           # eslint, must be clean
+pnpm qa             # 51 Playwright checks — needs a server on :3100 first
+```
 
-## Build verification commands
+`pnpm qa` = `qa:editorial` (18) + `qa:cinematic` (22) + `qa:a11y` (11). All 51
+pass as of 2026-08-16. It needs the built `out/` served on port 3100 (see above)
+or every check fails with `ERR_CONNECTION_REFUSED`.
 
-- `pnpm build` — fast (~1s), validates TS + Tailwind + App Router wiring. Use this for every checkpoint.
-- `pnpm lint` — only after 1.8 is finished; flat config not yet written.
-- `pnpm build && pnpm start` then `curl localhost:3000` — for runtime checks. **Kill** `next-server` between runs or `pnpm start` will hang on port-in-use.
-- `pnpm dlx shadcn@latest add <component>` — may auto-amend `app/globals.css`. Diff afterward.
+**QA scripts assert on real markup and rot silently.** Three assertions were
+found stale on 2026-08-16 (they referenced `.font-display` section labels and a
+`data-section-label-chrome` attribute that the editorial redesign removed), and
+two a11y contrast probes matched *nothing* and reported `ratio=0.00` as a
+failure rather than a miss. If a QA check fails, first confirm the selector
+still exists before "fixing" the component.
 
-## Vertical slice for the first end-to-end check
+## Content
 
-When you reach **task 4.7** (vertical slice), the home page should render: Splash → Nav → Hero with working scrollspy. Screenshot manually in dark + light. The task explicitly says: "confirm no warnings in console, LCP target < 1.2s in `pnpm build && pnpm start`."
+All site content is typed in `content/index.ts` (`profile`, `selectedWork`,
+`experience`, `oss`, `about`, `ragbenchDetail`). Source of truth for the facts is
+the resume vault at `~/Code/resume` (`Saketh_Kanchi_Resume.tex` + `projects/*.md`).
 
-Sections 5–9 each add one home block. Section 10 adds the RagBench deep-dive. Sections 11–13 finish meta, a11y verification, and deploy.
+`selectedWork` currently holds **6** projects: RagBench, drive-rag, Parley,
+tracker, Kitty, Multiple Disease Prediction. The card index/total strings
+(`"01".."06"` / `"06"`) are manual — **renumber every entry when adding one.**
 
-## Sanity rule
+OSS star counts in `data/oss.json` are refreshed at build time by
+`scripts/sync-oss.ts` (`pnpm sync:oss`, runs inside `pnpm build`), with
+hardcoded floors as fallback. Never live-fetch at request time.
 
-If something in this file disagrees with `openspec/changes/build-portfolio-v1/tasks.md`, **tasks.md wins**. If tasks.md disagrees with `portfolio-website-build-brief.md` in the resume repo, the brief wins (that's the canonical backup). This file is a checkpoint, not a source of truth.
+## Known open items
 
-Last updated: 2026-07-18, after section 13 deploy prep + first editorial-layer research pass.
+- No custom domain. Site is on the default Pages project-page URL.
+- LCP is ~3.6s because the full-screen type loader intentionally holds the hero
+  for 3s. This is a deliberate design choice, not a regression; the v1 target of
+  <1.2s does not apply while the loader ships.
+- `local branch master / deploy branch main` split is a foot-gun; consider
+  renaming the local branch to `main` to remove it.
+
+---
+
+# Historical build log
+
+> Everything below is the original build-time checkpoint, kept for the gotchas
+> and rationale. **It is out of date on progress, stack, and deploy target.**
+> Notably: "10 / 82 tasks", "Geist", "no theme toggle", "deploy on Vercel", and
+> "nothing has been committed yet" are all obsolete.
 
 ## Update — enrich-design-v2 (editorial-layer) LANDED
 
