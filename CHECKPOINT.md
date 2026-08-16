@@ -7,7 +7,12 @@
 
 ## TL;DR
 
-Portfolio at `~/Code/portfolio`, **live at <https://sakethkanchi.github.io/SakethKanchi/>**.
+Portfolio at `~/Code/portfolio`, **live on two hosts, both serving the same commit**:
+
+| Host | URL | basePath |
+|------|-----|----------|
+| Vercel (primary, on the resume) | <https://sakethkanchi.vercel.app/> | none |
+| GitHub Pages | <https://sakethkanchi.github.io/SakethKanchi/> | `/SakethKanchi` |
 
 All four OpenSpec changes are complete:
 
@@ -20,16 +25,26 @@ All four OpenSpec changes are complete:
 
 There is no in-flight change. New work should start a fresh OpenSpec change.
 
-## How it actually deploys (differs from the original plan)
+## How it actually deploys
 
-The v1 spec said Vercel. **What shipped is GitHub Pages.**
+The v1 spec said "fresh Vercel project, do not reuse `SakethKanchi/SakethKanchi`".
+What actually shipped is **both**: the `SakethKanchi/SakethKanchi` repo is wired
+to Vercel *and* to GitHub Pages, and a push to `main` updates both.
 
-- Static export: `output: "export"` in `next.config.ts` → `out/`.
-- Workflow: `.github/workflows/deploy-pages.yml`, triggered on push to **`main`**.
-- Repo: `SakethKanchi/SakethKanchi`. It is a **project page**, so the site lives
-  under the `/SakethKanchi/` path and `basePath`/`assetPrefix` are driven by
-  `NEXT_PUBLIC_BASE_PATH`. `https://sakethkanchi.github.io/` (no path) is a 404 —
-  that is expected, not a bug.
+- **Vercel** — `https://sakethkanchi.vercel.app/`. This is the URL printed on the
+  resume and used in outreach, so treat it as primary. Git-integration build (no
+  `.vercel/` dir committed, no `vercel.json`); it builds without
+  `NEXT_PUBLIC_BASE_PATH`, so assets are served from `/_next/...`.
+- **GitHub Pages** — `https://sakethkanchi.github.io/SakethKanchi/`, built by
+  `.github/workflows/deploy-pages.yml` from the `out/` static export
+  (`output: "export"`). It is a **project page**, so the workflow sets
+  `NEXT_PUBLIC_BASE_PATH=/SakethKanchi` and assets are served from
+  `/SakethKanchi/_next/...`. `https://sakethkanchi.github.io/` with no path is a
+  404 by design.
+
+Both were confirmed serving the same build (identical asset hashes) on
+2026-08-16. **If you change routing/asset config, check both hosts** — a
+basePath mistake breaks exactly one of them.
 
 **Gotcha that has already bitten once:** the local branch is `master` but Pages
 deploys from `main`. Committing to `master` alone changes nothing in production.
@@ -89,7 +104,8 @@ hardcoded floors as fallback. Never live-fetch at request time.
 
 ## Known open items
 
-- No custom domain. Site is on the default Pages project-page URL.
+- No custom domain. Vercel serves the default `*.vercel.app`; Pages serves the
+  default project-page path.
 - LCP is ~3.6s because the full-screen type loader intentionally holds the hero
   for 3s. This is a deliberate design choice, not a regression; the v1 target of
   <1.2s does not apply while the loader ships.
