@@ -160,11 +160,13 @@ export const selectedWork: Project[] = [
     title: "tracker",
     discipline: "Developer Tool / CLI",
     oneLine:
-      "One terminal command that shows the remaining quota on every AI subscription you own — Claude, Grok, Codex, Gemini, and OpenAI — instead of logging into five dashboards to find out who still has budget.",
+      "One terminal command that shows the remaining quota on every AI subscription you own — Claude, Grok, Codex, Gemini, and OpenAI — instead of logging into five dashboards to find out who still has budget. Published on PyPI as ai-quota-tracker.",
     stack: ["Python 3.11+", "SQLite", "OAuth 2.0 / OIDC refresh", "httpx + rich", "Discord webhook"],
     metric: "5 providers, one dashboard",
     href: "https://github.com/SakethKanchi/tracker",
     hrefLabel: "GitHub \u2197",
+    secondaryHref: "https://pypi.org/project/ai-quota-tracker/",
+    secondaryHrefLabel: "PyPI \u2197",
   },
   {
     index: "05",
