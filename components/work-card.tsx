@@ -31,8 +31,7 @@ export function WorkCard({ project }: { project: Project }) {
     statusCallout,
     href,
     hrefLabel,
-    secondaryHref,
-    secondaryHrefLabel,
+    secondaryLinks,
   } = project;
 
   const counter = kittyCounter(title, metric);
@@ -93,9 +92,13 @@ export function WorkCard({ project }: { project: Project }) {
           </p>
         )}
 
-        {secondaryHref && secondaryHrefLabel && (
-          <p className="mt-1">
-            <MonoLink href={secondaryHref}>{secondaryHrefLabel}</MonoLink>
+        {secondaryLinks && secondaryLinks.length > 0 && (
+          <p className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+            {secondaryLinks.map((link) => (
+              <MonoLink key={link.href} href={link.href}>
+                {link.label}
+              </MonoLink>
+            ))}
           </p>
         )}
       </div>

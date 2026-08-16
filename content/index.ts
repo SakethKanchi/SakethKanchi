@@ -35,8 +35,8 @@ export interface Project {
   statusCallout?: string;
   href?: Url;          // primary CTA
   hrefLabel?: string;  // "Read the build →" | "GitHub ↗" | "Marketplace ↗"
-  secondaryHref?: Url;
-  secondaryHrefLabel?: string;
+  // Secondary links: repo / registry / landing. Rendered after the primary CTA.
+  secondaryLinks?: { href: Url; label: string }[];
 }
 
 export interface JourneyStop {
@@ -158,8 +158,7 @@ export const selectedWork: Project[] = [
     stack: ["Cloudflare Workers", "Workers AI (bge-base + llama-3-8b)", "Vectorize", "Google Drive API + OAuth", "discord.js"],
     href: "/projects/drive-rag",
     hrefLabel: "Read the build →",
-    secondaryHref: "https://github.com/SakethKanchi/drive-rag",
-    secondaryHrefLabel: "GitHub ↗",
+    secondaryLinks: [{ href: "https://github.com/SakethKanchi/drive-rag", label: "GitHub ↗" }],
   },
   {
     index: "02",
@@ -171,8 +170,10 @@ export const selectedWork: Project[] = [
     stack: ["Node.js + discord.js", "Python + faster-whisper", "FastAPI", "node:sqlite + FTS5", "Pluggable LLMs (Gemini/OpenAI/Ollama)"],
     href: "/projects/parley",
     hrefLabel: "Read the build →",
-    secondaryHref: "https://github.com/SakethKanchi/parley",
-    secondaryHrefLabel: "GitHub ↗",
+    secondaryLinks: [
+      { href: "https://github.com/SakethKanchi/parley", label: "GitHub ↗" },
+      { href: "https://sakethkanchi.github.io/parley-landing/", label: "Landing ↗" },
+    ],
   },
   {
     index: "03",
@@ -185,8 +186,10 @@ export const selectedWork: Project[] = [
     metric: "5 providers, one dashboard",
     href: "/projects/tracker",
     hrefLabel: "Read the build →",
-    secondaryHref: "https://pypi.org/project/ai-quota-tracker/",
-    secondaryHrefLabel: "PyPI \u2197",
+    secondaryLinks: [
+      { href: "https://github.com/SakethKanchi/tracker", label: "GitHub ↗" },
+      { href: "https://pypi.org/project/ai-quota-tracker/", label: "PyPI ↗" },
+    ],
   },
   {
     index: "04",
@@ -199,8 +202,7 @@ export const selectedWork: Project[] = [
     metric: "10,000+ downloads",
     href: "/projects/kitty-vscode-theme",
     hrefLabel: "Read the build →",
-    secondaryHref: "https://marketplace.visualstudio.com/items?itemName=SakethKanchi.kitty-vscode-theme",
-    secondaryHrefLabel: "Marketplace ↗",
+    secondaryLinks: [{ href: "https://marketplace.visualstudio.com/items?itemName=SakethKanchi.kitty-vscode-theme", label: "Marketplace ↗" }],
   },
   {
     index: "05",
@@ -214,8 +216,7 @@ export const selectedWork: Project[] = [
     // the repo is in fact public (verified 200), so it now links out like the rest.
     href: "/projects/multiple-disease-prediction",
     hrefLabel: "Read the build →",
-    secondaryHref: "https://github.com/SakethKanchi/Multiple_Disease_Prediction",
-    secondaryHrefLabel: "GitHub ↗",
+    secondaryLinks: [{ href: "https://github.com/SakethKanchi/Multiple_Disease_Prediction", label: "GitHub ↗" }],
   },
 ];
 

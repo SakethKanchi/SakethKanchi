@@ -158,6 +158,45 @@ async function main() {
     "kitty-vscode-theme",
     "multiple-disease-prediction",
   ];
+  // --- Work cards expose the dossier CTA plus every secondary link ---
+  // A card must lead with "Read the build" into its dossier, and must not
+  // silently drop a repo/registry/landing link that the content model declares.
+  // (Regression guard: converting the single secondaryHref slot to an array
+  // previously dropped Parley's Landing and tracker's GitHub link.)
+  const EXPECTED_CARD_LINKS = {
+    "drive-rag": ["https://github.com/SakethKanchi/drive-rag"],
+    parley: [
+      "https://github.com/SakethKanchi/parley",
+      "https://sakethkanchi.github.io/parley-landing/",
+    ],
+    tracker: [
+      "https://github.com/SakethKanchi/tracker",
+      "https://pypi.org/project/ai-quota-tracker/",
+    ],
+    "kitty-vscode-theme": [
+      "https://marketplace.visualstudio.com/items?itemName=SakethKanchi.kitty-vscode-theme",
+    ],
+    "multiple-disease-prediction": [
+      "https://github.com/SakethKanchi/Multiple_Disease_Prediction",
+    ],
+  };
+  await page.goto(BASE, { waitUntil: "networkidle" });
+  for (const [slug, externals] of Object.entries(EXPECTED_CARD_LINKS)) {
+    const card = page.locator("article", {
+      has: page.locator(`a[href*="/projects/${slug}"]`),
+    });
+    const cta = await card.locator(`a[href*="/projects/${slug}"]`).first().innerText();
+    const hrefs = await card.locator("a").evaluateAll((as) =>
+      as.map((a) => a.getAttribute("href")),
+    );
+    const missing = externals.filter((u) => !hrefs.includes(u));
+    check(
+      `card ${slug}: dossier CTA is primary and keeps ${externals.length} secondary link(s)`,
+      /read the build/i.test(cta) && missing.length === 0,
+      `cta=${JSON.stringify(cta.trim())} missing=${JSON.stringify(missing)}`,
+    );
+  }
+
   for (const slug of SLUGS) {
     const res = await page.goto(BASE + "/projects/" + slug, {
       waitUntil: "networkidle",
