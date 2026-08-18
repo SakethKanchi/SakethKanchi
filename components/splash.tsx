@@ -39,7 +39,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
     setVisible(false);
     if (typeof window !== "undefined") {
       try {
-        sessionStorage.setItem(SPLASH_SESSION_KEY, "1");
+        localStorage.setItem(SPLASH_SESSION_KEY, "1");
       } catch {
         // Private mode — swallow
       }
@@ -65,7 +65,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
     }
     if (
       typeof window !== "undefined" &&
-      sessionStorage.getItem(SPLASH_SESSION_KEY)
+      localStorage.getItem(SPLASH_SESSION_KEY)
     ) {
       clearSplashLock();
       setVisible(false);

@@ -28,7 +28,7 @@ export function SectionHeader({
         className,
       )}
     >
-      <span className="mono-label tabular-nums text-ember">
+      <span className="mono-label tabular-nums text-ember hidden sm:inline">
         {`${render} //`}
       </span>
       <span className="font-sans text-[clamp(1.35rem,2.5vw,1.55rem)] font-medium tracking-tight text-ink">

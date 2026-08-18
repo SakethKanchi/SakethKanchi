@@ -224,29 +224,58 @@ export const selectedWork: Project[] = [
 // journey
 // ---------------------------------------------------------------------------
 
+// Synced with ~/Code/resume FullStackAI variant (2026-08-17).
 export const experience: JourneyStop[] = [
   {
     index: "01",
     company: "Fund Flow OS",
-    role: "Full Stack AI Engineer · LTM",
+    role: "Full Stack AI Engineer",
     dates: "Dec 2025 – Present",
     location: "Jersey City, NJ",
     isJob: true,
     bullets: [
-      "Delivered customer-facing features through the full SDLC — requirements, design, coding, unit/integration testing, deployment, production support — using React, Node.js, and RESTful APIs.",
-      "Designed and deployed a RAG microservice on Cloudflare Workers exposing REST endpoints for semantic search over 40+ internal documents via a Discord interface; handles 50+ daily queries.",
+      "Own customer-facing features end to end in React, Node.js, and REST APIs; integrated Apollo.io so the product auto-enriches and stores 500+ lead records.",
+      "Shipped production RAG with pgvector/BM25 hybrid retrieval, Reciprocal Rank Fusion, cross-encoder reranking, and LiteLLM routing across Gemini 2.5, GPT-4o, and Claude 3.5; added nightly golden-dataset regression evaluation in CI.",
+      "Cut monthly hosting costs by ~80% by migrating long-running workloads from Vercel to Fly.io and redesigning the deployment architecture for production.",
     ],
   },
   {
     index: "02",
     company: "SideQuest",
-    role: "Automation Team Lead (incl. ML & Flutter Intern) · LTM",
+    role: "Software Engineer, Automation",
     dates: "Jun 2025 – Dec 2025",
     location: "Jersey City, NJ",
     isJob: true,
     bullets: [
-      "Led the automation engineering team; built tools and pipelines that accelerated developer productivity across the platform.",
-      "Built an AI-driven quest generation pipeline integrating Foursquare Places API, Google Gemini, and Unsplash — concurrent batch processing with resilient retry logic to fetch, enrich, and categorize points of interest.",
+      "Led automation work for a small eng team: shipped internal tools (Instagram data scraper, Google Apps Script jobs) that removed recurring manual data entry.",
+      "Built an AI quest-generation pipeline (Foursquare Places API, Google Gemini, Unsplash) with batch processing and retries to fetch, enrich, and categorize points of interest.",
+      "Automated Mapbox tileset generation from PostgreSQL/GeoJSON, powering dynamic location-based quest maps in the product.",
+    ],
+  },
+  {
+    index: "03",
+    company: "Montalvo Technologies",
+    role: "Software Engineer",
+    dates: "Jul 2023 – Jan 2024",
+    location: "Hyderabad, TG",
+    isJob: true,
+    bullets: [
+      "Built full-stack MERN applications with React interfaces, Node.js/Express APIs, and MongoDB persistence.",
+      "Implemented CRUD workflows and authentication across frontend and backend application layers.",
+      "Added API error handling and debugged application behavior across common request failures.",
+    ],
+  },
+  {
+    index: "04",
+    company: "TechBulls",
+    role: "Web Development Intern",
+    dates: "Jan 2022 – Jul 2022",
+    location: "Hyderabad, TG",
+    isJob: true,
+    bullets: [
+      "Integrated a Python stock-price data feed and validated incoming market data for a financial visualization application.",
+      "Added automated tests for data-processing and calculation logic to verify expected outputs.",
+      "Built an interactive React/TypeScript interface with Perspective to visualize price movements.",
     ],
   },
 ];
@@ -259,7 +288,10 @@ export const education: JourneyStop[] = [
     dates: "Dec 2025",
     location: "Hoboken, NJ",
     isJob: false,
-    auxLines: ["GPA 3.83"],
+    auxLines: [
+      "GPA 3.83/4.0",
+      "Coursework: Machine Learning, Algorithms, Intro to Cyber Security, Financial Analytics",
+    ],
   },
   {
     index: "02",
@@ -268,7 +300,10 @@ export const education: JourneyStop[] = [
     dates: "Jun 2023",
     location: "Hyderabad, TG",
     isJob: false,
-    auxLines: ["CGPA 8.29"],
+    auxLines: [
+      "GPA 8.29/10.0",
+      "Coursework: Data Structures & Algorithms, DBMS, Operating Systems, Computer Networks",
+    ],
   },
 ];
 
@@ -305,35 +340,35 @@ export const oss: OssEntry[] = [
 // ---------------------------------------------------------------------------
 
 export const about: About = {
-  // Verbatim from Saketh_Kanchi_Resume.tex \roleSummary (fullstack variant, lines 116–118).
+  // Verbatim from FullStackAI resume variant summary (2026-08-17).
   paragraph:
-    "Full-Stack Engineer building AI-powered applications and intelligent automation across React, Node.js, and Python. Hands-on experience with RAG systems, LLM integrations, agentic workflows, and internal developer tools. Shipped a developer tool with 10,000+ users and led an automation team building AI-driven pipelines on cloud infrastructure.",
+    "Full Stack AI Engineer who builds customer-facing products in React and Node.js and carries features through APIs, data, testing, and deployment. At Fund Flow OS, shipped production RAG, enriched 500+ lead records, and cut hosting costs by ~80%.",
   currently: [
     "Building a RAG retrieval quality lab",
     "Full Stack AI Engineer at Fund Flow OS",
     "Based in Jersey City, NJ",
   ],
-  // Fullstack order per brief §8.4: Languages, AI / Data, Databases & APIs, Cloud & DevOps, Tools.
+  // Groups mirror the FullStackAI resume variant skills section.
   skills: [
     {
       label: "Languages & Frameworks",
-      items: ["Python", "JavaScript/TypeScript", "Node.js", "React.js", "Dart/Flutter", "Rust", "C++", "HTML/CSS"],
+      items: ["JavaScript/TypeScript", "React.js", "Node.js", "Python", "SQL", "FastAPI"],
     },
     {
-      label: "AI / Data",
-      items: ["RAG", "Vector Embeddings", "LLM Integration", "Pandas", "Scikit-learn"],
+      label: "AI Systems",
+      items: ["RAG", "Hybrid Retrieval", "BM25", "pgvector", "Reranking", "Vector Embeddings", "LLM Evaluation", "LiteLLM"],
     },
     {
       label: "Databases & APIs",
-      items: ["PostgreSQL", "MongoDB", "Firebase", "GraphQL", "RESTful APIs"],
+      items: ["PostgreSQL", "SQLite", "REST APIs", "GraphQL", "OAuth/OIDC"],
     },
     {
-      label: "Cloud & DevOps",
-      items: ["Fly.io", "Vercel", "Cloudflare Workers", "Docker", "Linux", "Git", "GitHub", "CI/CD"],
+      label: "Cloud & Delivery",
+      items: ["Fly.io", "Vercel", "Cloudflare Workers", "Docker", "Linux", "GitHub Actions", "CI/CD"],
     },
     {
-      label: "Tools",
-      items: ["Playwright", "Postman", "VS Code APIs", "Discord API", "Foursquare API", "Google Gemini API"],
+      label: "Testing & Tools",
+      items: ["Pytest", "Playwright", "Postman", "Git"],
     },
   ],
   certifications: [

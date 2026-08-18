@@ -30,8 +30,8 @@ export default async function Og({
           flexDirection: "column",
           justifyContent: "center",
           padding: "5rem",
-          backgroundColor: "#000000",
-          color: "#cdc4ba",
+          backgroundColor: "#11141c",
+          color: "#eceef4",
           fontFamily: "Georgia, ui-serif, serif",
         }}
       >
@@ -41,7 +41,7 @@ export default async function Og({
             fontFamily: "ui-monospace, monospace",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#d4a06a",
+            color: "#f2a93b",
             marginBottom: "1.25rem",
           }}
         >
@@ -62,7 +62,7 @@ export default async function Og({
             marginTop: "1.25rem",
             fontSize: "1.75rem",
             fontFamily: "ui-monospace, monospace",
-            color: "#d4a06a",
+            color: "#f2a93b",
           }}
         >
           {discipline}
@@ -72,7 +72,7 @@ export default async function Og({
             marginTop: "0.75rem",
             fontFamily: "ui-monospace, monospace",
             fontSize: "1.1rem",
-            color: "#958f87",
+            color: "#8c95a9",
           }}
         >
           Saketh Kanchi
@@ -86,7 +86,7 @@ export default async function Og({
             fontSize: "0.95rem",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#7a756e",
+            color: "#6b7388",
           }}
         >
           sakethkanchi.com

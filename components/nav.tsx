@@ -320,6 +320,19 @@ export function Nav() {
         <Seal />
         <div className="flex items-center gap-4">
           <DesktopNav active={active} />
+          {/* Mobile: resume stays one tap away — highest-intent recruiter link. */}
+          <a
+            href={RESUME_URL}
+            rel="noreferrer noopener"
+            target="_blank"
+            className={cn(
+              "label-upper text-ink-muted lg:hidden",
+              "transition-colors duration-150 hover:text-ember",
+              "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
+            )}
+          >
+            Resume <span aria-hidden>↗</span>
+          </a>
           {/* Mobile: switch sits outside the sheet so theme is one tap away. */}
           <ThemeToggle className="lg:hidden" />
           <MobileNav active={active} />

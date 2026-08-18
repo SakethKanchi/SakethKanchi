@@ -54,7 +54,7 @@ export function WorkCard({ project }: { project: Project }) {
             {title}
           </h3>
           {isFlagship && (
-            <span className="rounded-[2px] border border-ember bg-ember-faint px-2 py-0.5 mono-micro text-ember">
+            <span className="rounded-md border border-ember bg-ember-faint px-2 py-0.5 mono-micro text-ember">
               Flagship
             </span>
           )}
@@ -69,7 +69,7 @@ export function WorkCard({ project }: { project: Project }) {
           {stack.map((chip) => (
             <li
               key={chip}
-              className="rounded-[2px] border border-line bg-paper-raised px-2 py-1 mono-body text-ink-muted"
+              className="rounded-md border border-line bg-paper-raised px-2 py-1 mono-body text-ink-muted"
             >
               {chip}
             </li>
@@ -110,14 +110,7 @@ export function WorkCard({ project }: { project: Project }) {
               href={href}
               rel={/^https?:/.test(href) ? "noreferrer noopener" : undefined}
               target={/^https?:/.test(href) ? "_blank" : undefined}
-              className={cn(
-                "btn-label text-ink-dim hover:text-ember",
-                "underline-offset-[0.2em]",
-                "bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-[position:0_100%] bg-no-repeat",
-                "transition-[background-size,color] duration-300 ease-out",
-                "hover:bg-[length:100%_1px]",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ember)]",
-              )}
+              className="btn-bone"
             >
               {hrefLabel}
             </Link>

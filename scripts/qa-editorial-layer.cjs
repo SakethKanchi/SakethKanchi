@@ -62,7 +62,7 @@ async function main() {
 
     // splash_seen set
     const seen = await page.evaluate(() =>
-      sessionStorage.getItem("splash_seen"),
+      localStorage.getItem("splash_seen"),
     );
     check("normal: splash_seen set after dismiss", seen === "1", `=${seen}`);
 
@@ -213,7 +213,7 @@ async function main() {
     await ctx.close();
   }
 
-  // ---- 3. REPEAT VISIT (splash_seen persists in session) ----
+  // ---- 3. REPEAT VISIT (splash_seen persists across visits) ----
   {
     const ctx = await browser.newContext({
       viewport: { width: 1280, height: 900 },
@@ -225,7 +225,7 @@ async function main() {
     await page.keyboard.press("Escape");
     await page.waitForTimeout(200);
     const seen1 = await page.evaluate(() =>
-      sessionStorage.getItem("splash_seen"),
+      localStorage.getItem("splash_seen"),
     );
     check("repeat: keypress dismiss sets splash_seen", seen1 === "1");
     // Reload — loader should be skipped

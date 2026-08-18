@@ -46,14 +46,14 @@ export function ThemeToggle({ className }: { className?: string }) {
         aria-hidden
         className={cn(
           "relative inline-flex h-[18px] w-[34px] shrink-0 items-center",
-          "rounded-[2px] border border-line bg-paper-raised",
+          "rounded-full border border-line bg-paper-raised",
           "transition-colors duration-150 group-hover:border-[var(--ember-line)]",
         )}
       >
         {/* Thumb */}
         <span
           className={cn(
-            "absolute top-[2px] size-[12px] rounded-[1px] bg-ember",
+            "absolute top-[2px] size-[12px] rounded-full bg-ember",
             "transition-transform duration-200 ease-out",
             isLight ? "translate-x-[18px]" : "translate-x-[2px]",
             !ready && "transition-none",
@@ -64,7 +64,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         aria-hidden
         className="mono-label text-ink-faint transition-colors group-hover:text-ember"
       >
-        {isLight ? "DAY" : "NITE"}
+        {isLight ? "LIGHT" : "DARK"}
       </span>
     </button>
   );

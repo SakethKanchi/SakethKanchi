@@ -17,8 +17,8 @@ export default function Og() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "5rem",
-          backgroundColor: "#000000",
-          color: "#cdc4ba",
+          backgroundColor: "#11141c",
+          color: "#eceef4",
           fontFamily: "Georgia, ui-serif, serif",
         }}
       >
@@ -28,7 +28,7 @@ export default function Og() {
             fontFamily: "ui-monospace, monospace",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#d4a06a",
+            color: "#f2a93b",
             marginBottom: "1.5rem",
           }}
         >
@@ -49,7 +49,7 @@ export default function Og() {
             marginTop: "1.5rem",
             fontSize: "1.75rem",
             fontFamily: "ui-monospace, monospace",
-            color: "#d4a06a",
+            color: "#f2a93b",
           }}
         >
           Full-Stack AI Engineer
@@ -63,7 +63,7 @@ export default function Og() {
             fontSize: "0.95rem",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#7a756e",
+            color: "#6b7388",
           }}
         >
           sakethkanchi.com
@@ -75,7 +75,7 @@ export default function Og() {
             left: "5rem",
             fontSize: "2rem",
             fontFamily: "system-ui, sans-serif",
-            color: "#d4a06a",
+            color: "#f2a93b",
             opacity: 0.85,
           }}
         >

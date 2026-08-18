@@ -63,8 +63,8 @@ export function AboutSection() {
                 }
               >
                 <p className="dossier-key mb-1.5">{group.label}</p>
-                <p className="mono-body text-ink-dim">
-                  {group.items.join(" · ")}
+                <p className="mono-body text-ink-dim [text-wrap:pretty]">
+                  {group.items.join(" ·\u00A0")}
                 </p>
               </div>
             ))}
