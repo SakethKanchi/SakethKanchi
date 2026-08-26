@@ -61,4 +61,4 @@
 
 ---
 
-<p align="center"><i>This repo also holds the source for my portfolio site (Next.js) → <a href="https://saketh-kanchi.vercel.app">saketh-kanchi.vercel.app</a></i></p>
+<p align="center"><i>This repo also holds the source for my portfolio site (Next.js) → <a href="https://sakethkanchi.vercel.app">saketh-kanchi.vercel.app</a></i></p>
