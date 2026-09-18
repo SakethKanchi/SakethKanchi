@@ -21,7 +21,7 @@
 </table>
 </div>
 
-<h2>What teams can evaluate quickly</h2>
+<!-- <h2>What teams can evaluate quickly</h2>
 
 <table width="100%">
 <tr>
@@ -29,20 +29,20 @@
 <td width="33%" valign="top"><h3>Public proof</h3><p>20 repositories · 33 stars</p></td>
 <td width="33%" valign="top"><h3>Momentum</h3><p>1,823 contributions · 140 active days</p></td>
 </tr>
-</table>
+</table> -->
 
-<p><sub>Building useful software and sharing the work in public.</sub></p>
+<!-- <p><sub>Building useful software and sharing the work in public.</sub></p> -->
 
 <h2>Proof at a glance</h2>
 
-<table width="100%">
+<!-- <table width="100%">
 <tr>
 <td width="25%" align="center"><strong>20</strong><br /><sub>Repositories</sub></td>
 <td width="25%" align="center"><strong>33</strong><br /><sub>Stars</sub></td>
 <td width="25%" align="center"><strong>1,823</strong><br /><sub>Contributions</sub></td>
 <td width="25%" align="center"><strong>4</strong><br /><sub>Followers</sub></td>
 </tr>
-</table>
+</table> -->
 
 <p align="center">
 <picture>
@@ -80,22 +80,24 @@
 
 <h2>Technical toolkit</h2>
 
-<p align="center">
-<picture>
-  <source media="(prefers-color-scheme: light)" srcset="https://www.gitskins.com/api/section/stack?username=sakethkanchi&theme=github-dark&avatar=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F70198692%3Fu%3Dd9ebf82b382c39aa65031df9ab58ae541db40081%26v%3D4&v=recruiter-stack-1&mode=light" />
-  <img src="https://www.gitskins.com/api/section/stack?username=sakethkanchi&theme=github-dark&avatar=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F70198692%3Fu%3Dd9ebf82b382c39aa65031df9ab58ae541db40081%26v%3D4&v=recruiter-stack-1&mode=dark" width="100%" alt="Saketh technology stack" />
-</picture>
+**Languages & Frameworks**
+
+<p>
+  <img src="https://skillicons.dev/icons?i=python,ts,js,nodejs,react,nextjs,cpp,html,css,tailwind" alt="languages" />
 </p>
 
-<table width="100%">
-<tr>
-<td width="20%" align="center"><strong>Jupyter Notebook</strong><br /><sub>78% of public code</sub></td>
-<td width="20%" align="center"><strong>TypeScript</strong><br /><sub>9% of public code</sub></td>
-<td width="20%" align="center"><strong>JavaScript</strong><br /><sub>6% of public code</sub></td>
-<td width="20%" align="center"><strong>Python</strong><br /><sub>2% of public code</sub></td>
-<td width="20%" align="center"><strong>CSS</strong><br /><sub>2% of public code</sub></td>
-</tr>
-</table>
+**AI / Data · Databases**
+
+<p>
+  <img src="https://skillicons.dev/icons?i=sklearn,postgres,mongodb,sqlite" alt="ai-data" />
+</p>
+
+**Cloud & DevOps · Tools**
+
+<p>
+  <img src="https://skillicons.dev/icons?i=vercel,cloudflare,docker,linux,git,github,fastapi,postman" alt="cloud-tools" />
+</p>
+
 
 <h2>Consistency signal</h2>
 
@@ -114,5 +116,3 @@
 <td width="38%" valign="middle" align="right"><a href="https://github.com/sakethkanchi">GitHub</a><br /><a href="https://sakethkanchi.vercel.app/">Website</a></td>
 </tr>
 </table>
-
-<p align="center"><sub>Saketh · recruiter-ready profile generated with <a href="https://www.gitskins.com/readme-generator">GitSkins</a></sub></p>
